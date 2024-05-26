@@ -54,6 +54,7 @@
 			cookList.value = uni.getStorageSync('cookData')
 		}
         filterCooks('', '')
+		console.log(1113);
     })
     
     const cookTags = ref(uni.getStorageSync('cookTagData'))
@@ -101,58 +102,6 @@
 </script>
 
 <style lang="scss" scoped>
-    .touhou-tag {
-        display: flex;
-        margin: 3px 2px;
-        padding: 2px 8px;
-        color: #830000;
-        background-color: inherit;
-        background-image: url('/static/img/common/tag.png');
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        box-shadow: inset 0px 0px 10px 1px #E6B4A6;
-        position: relative;
-    }
-    .touhou-tag-select::after {
-        content: '';
-        width: 5px;
-        height: 15px;
-        position: absolute;
-        right: 5px;
-        bottom: 0px;
-        border: 3px solid #E40D0D;
-        border-top-color: transparent;
-        border-left-color: transparent;
-        transform: rotate(45deg);
-    }
-    .touhou-notag-left {
-        display: flex;
-        margin: 3px 2px;
-        padding: 2px 14px;
-        color: #E40D0D;
-        background-color: inherit;
-        background-image: url('/static/img/common/notag-no.png');
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        box-shadow: inset 0px 0px 10px 1px #5D453A;
-        position: relative;
-    }
-    .touhou-notag-left-select::after {
-        content: '';
-        width: 5px;
-        height: 15px;
-        position: absolute;
-        right: 5px;
-        bottom: 0px;
-        border: 3px solid #E40D0D;
-        border-top-color: transparent;
-        border-left-color: transparent;
-        transform: rotate(45deg);
-    }
-    
-    body {
-        background-color: #8D6549;
-    }
     .cook {
         width: 100vw;
         background-color: #8D6549;

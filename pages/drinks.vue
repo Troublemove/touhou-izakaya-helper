@@ -66,34 +66,6 @@
 </script>
 
 <style lang="scss" scoped>
-	.tag {
-	    display: flex;
-        margin: 3px 2px;
-	    padding: 2px 8px;
-	    color: #A45C22;
-	    background-color: inherit;
-	    background-image: url('/static/img/common/drinks.png');
-	    background-size: 100% 100%;
-	    background-repeat: no-repeat;
-	    box-shadow: inset 0px 0px 10px 1px #E6B4A6;
-	    position: relative;
-	}
-	.tag-select::after {
-	    content: '';
-	    width: 5px;
-	    height: 15px;
-	    position: absolute;
-	    right: 5px;
-	    bottom: 0px;
-	    border: 3px solid #E40D0D;
-	    border-top-color: transparent;
-	    border-left-color: transparent;
-	    transform: rotate(45deg);
-	}
-	
-	body {
-	    background-color: #8D6549;
-	}
     .drinks {
         width: 100vw;
         background-color: #8D6549;

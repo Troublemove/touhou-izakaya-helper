@@ -149,39 +149,10 @@
         }
     }
     
-    .touhou-tag {
-        display: inline-block;
-        margin: 5px 4px;
-        padding: 2px 8px;
-        color: #830000;
-        background-color: inherit;
-        background-image: url('/static/img/common/tag.png');
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        box-shadow: inset 0px 0px 10px 1px #E6B4A6;
-        position: relative;
-    }
-
-    .touhou-tag-select::after {
-        content: '';
-        width: 5px;
-        height: 15px;
-        position: absolute;
-        right: 5px;
-        bottom: 0px;
-        border: 3px solid #E40D0D;
-        border-top-color: transparent;
-        border-left-color: transparent;
-        transform: rotate(45deg);
-    }
-    
     :deep(.uni-scroll-view::-webkit-scrollbar) {
         display: none;
     }
     
-    body {
-        background-color: #8D6549;
-    }
     .npc {
         background-color: #8D6549;
 

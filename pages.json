@@ -1,0 +1,80 @@
+{
+    "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+        // {
+        //     "path": "pages/index/index",
+        //     "style": {
+        //         "navigationBarTitleText": "夜雀助手",
+        //         "navigationBarBackgroundColor": "#8D6549",
+        //         "backgroundColor": "#8D6549"
+        //     }
+        // },
+        {
+            "path": "pages/npc",
+            "style": {
+                "navigationBarTitleText": "夜雀助手",
+                "backgroundColor": "#8D6549"
+            }
+        },
+        {
+            "path": "pages/npcItem",
+            "style": {
+				// "navigationStyle": "custom",
+                "backgroundColor": "#8D6549"
+            }
+        },
+        {
+            "path": "pages/drinks",
+            "style": {
+                "navigationBarTitleText": "夜雀助手",
+                "backgroundColor": "#8D6549"
+            }
+        },
+        {
+            "path": "pages/cook",
+            "style": {
+                "navigationBarTitleText": "夜雀助手",
+                "backgroundColor": "#8D6549"
+            }
+        },
+        {
+            "path": "pages/setting",
+            "style": {
+                "navigationBarTitleText": "设置",
+                "backgroundColor": "#8D6549"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#8D6549",
+        "backgroundColor": "#8D6549"
+    },
+    "tabBar": {
+        "color": "#8D6549",
+        "selectedColor": "#8D6549",
+        "borderStyle": "black",
+        "backgroundColor": "#8D6549",
+        "list": [{
+            "pagePath": "pages/npc",
+            "iconPath": "/static/img/common/npc-1.png",
+            "selectedIconPath": "/static/img/common/npc-0.png",
+            "text": "sss"
+        },{
+            "pagePath": "pages/cook",
+            "iconPath": "/static/img/common/food-1.png",
+            "selectedIconPath": "/static/img/common/food-0.png",
+            "text": ""
+        },{
+            "pagePath": "pages/drinks",
+            "iconPath": "/static/img/common/drinks-1.png",
+            "selectedIconPath": "/static/img/common/drinks-0.png",
+            "text": ""
+        },{
+            "pagePath": "pages/setting",
+            "iconPath": "/static/img/common/setting-1.png",
+            "selectedIconPath": "/static/img/common/setting-0.png",
+            "text": ""
+        }]
+    },
+    "uniIdRouter": {}
+}

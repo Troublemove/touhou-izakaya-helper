@@ -1,0 +1,158 @@
+<template>
+    <view class="drinks">
+		<view class="drinks-tag">
+			<view class="tag" v-for="item in drinksTags" :key="item" @click="filterDrinks(item)">
+				 • {{ item }}
+				 <view v-if="drinksFilter.has(item)" class="tag-select"></view>
+			</view>
+		</view>
+		<view class="drinks-div">
+			<view class="drinks-div-drink" v-for="item in npcDrinks" :key="item.name">
+				<view class="drinks-div-drink-left">
+                    <image :src="'/static/img/drink/' + item.name + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
+				</view>
+				<view class="drinks-div-drink-middle">
+					<view><span class="drinks-div-drink-middle-span">{{ item.chinese }}</span></view>
+					<view><span class="drinks-div-drink-middle-span-money">￥{{ item.money }}</span> - Lv {{ item.level }}</view>
+				</view>
+			</view>
+		</view>
+    </view>
+	<tab-bar :selected="2"></tab-bar>
+</template>
+
+<script setup>
+    import { ref } from 'vue';
+    import tabBar from '@/components/tab-bar/tabBar.vue'
+    import { onShow } from '@dcloudio/uni-app'
+    import { initCache } from '@/static/js/common.js'
+
+    onShow(() => {
+        initCache()
+		if (!!drinksTags) {
+			drinksTags.value = uni.getStorageSync('drinkTagData')
+		}
+		if (!!drinks) {
+			drinks.value = uni.getStorageSync('drinksData')
+		}
+        filterDrinks('')
+    })
+    
+    const drinksTags = ref(uni.getStorageSync('drinkTagData'))
+    const drinks = ref(uni.getStorageSync('drinksData'))
+    const npcDrinks = ref([])
+    const drinksFilter = ref(new Set())
+	const filterDrinks = (item) => {
+	    if (!!item) {
+	        if (drinksFilter.value.has(item)) {
+	            drinksFilter.value.delete(item)
+	        } else {
+	            drinksFilter.value.add(item)
+	        }
+	    }
+	    // 筛选饮料
+	    npcDrinks.value = drinks.value.filter(item => {
+	        let tagList = item.tag.split(",")
+	        let filter = [...drinksFilter.value].concat()
+	        if (tagList.length < drinksFilter.value.size) {
+	            return false
+	        }
+	        tagList.forEach(tag => {
+	            filter = filter.filter(item => item !== tag.trim())
+	        })
+	        return filter.length === 0
+	    })
+	}
+</script>
+
+<style lang="scss" scoped>
+	.tag {
+	    display: flex;
+        margin: 3px 2px;
+	    padding: 2px 8px;
+	    color: #A45C22;
+	    background-color: inherit;
+	    background-image: url('/static/img/common/drinks.png');
+	    background-size: 100% 100%;
+	    background-repeat: no-repeat;
+	    box-shadow: inset 0px 0px 10px 1px #E6B4A6;
+	    position: relative;
+	}
+	.tag-select::after {
+	    content: '';
+	    width: 5px;
+	    height: 15px;
+	    position: absolute;
+	    right: 5px;
+	    bottom: 0px;
+	    border: 3px solid #E40D0D;
+	    border-top-color: transparent;
+	    border-left-color: transparent;
+	    transform: rotate(45deg);
+	}
+	
+	body {
+	    background-color: #8D6549;
+	}
+    .drinks {
+        width: 100vw;
+        background-color: #8D6549;
+		
+		.drinks-tag {
+			width: 96%;
+			padding: 10px;
+			display: flex;
+			flex-wrap: wrap;
+		}
+		
+		.drinks-div {
+			width: 100vw;
+			padding: 4px;
+            height: calc(100dvh - 280px);
+			overflow: auto;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-content: flex-start;
+			justify-content: flex-start;
+			align-items: flex-start;
+			
+			.drinks-div-drink {
+				width: 45%;
+				margin: 5px 2px;
+				padding: 5px 5px;
+				height: auto;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				border-radius: 10px;
+				background-color: #FBEFCB;
+				
+				.drinks-div-drink-left {
+					width: 50px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+				}
+				
+				.drinks-div-drink-middle {
+					margin-left: 8px;
+					font-size: 14px;
+					width: calc(100vw - 55px);
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					justify-content: space-between;
+					
+					.drinks-div-drink-middle-span {
+						font-weight: bold;
+					}
+					.drinks-div-drink-middle-span-money {
+						font-weight: bold;
+					}
+					
+				}
+			}
+		}
+    }
+</style>

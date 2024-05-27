@@ -1,5 +1,5 @@
 // 角色配置
-// Excel 函数 =CONCATENATE("{'name':'', 'chinese':'",B2,"', 'info': '','tag': ['",C2,"'], 'noTag': ['",D2,"'], 'drinks': ['",E2,"'], 'location': '",A2,"''money': '', 'recommendCooks': '', 'recommendDrinks': '', 'rewardCard': {'name':'', 'effect': ''}, 'punishCard': {'name':'', 'effect': ''}, 'friendship': [{'name':'', 'condition':'', 'task': ''}]},")
+// Excel 函数 =CONCATENATE("{'name':'",C2,"', 'chinese':'",A2,"', 'info': '','tag': '",D2,"', 'noTag': '",E2,"', 'drinks': '",F2,"', 'money': '",G2,"', 'recommendCooks': '",L2,"', 'recommendDrinks': '",M2,"',",IF(H2="", " 'rewardCard': {}, 'punishCard': {},", " 'rewardCard': {'name':'"&H2&"', 'effect': '"&I2&"'}, 'punishCard': {'name':'"&J2&"', 'effect': '"&K2&"'},"),IF(N2="", " 'friendship': [],", " 'friendship': [{'name':'"&N2&"', 'condition':'"&O2&"', 'task': '"&P2&"'}, {'name':'"&Q2&"', 'condition':'"&R2&"', 'task': '"&S2&"'}, {'name':'"&T2&"', 'condition':'"&U2&"', 'task': '"&V2&"'}, {'name':'"&W2&"', 'condition':'"&X2&"', 'task': '"&Y2&"'}],")," 'location':'",B2,"'},")
 
 export const npcData = () => {
 	return [{
@@ -266,27 +266,7 @@ export const npcData = () => {
 				"name": "「虚构的情报」",
 				"effect": "已经解锁的稀客喜好信息,会随机被隐藏…"
 			},
-			"friendship": [{
-					"name": "2",
-					"condition": "",
-					"task": ""
-				},
-				{
-					"name": "",
-					"condition": "",
-					"task": ""
-				},
-				{
-					"name": "",
-					"condition": "",
-					"task": ""
-				},
-				{
-					"name": "",
-					"condition": "",
-					"task": ""
-				}
-			],
+			"friendship": [],
 			"location": "人间之里, 辉针城"
 		},
 		{
@@ -1031,7 +1011,7 @@ export const npcData = () => {
 			"name": "xxyy",
 			"chinese": "星熊勇仪",
 			"info": "",
-			"tag": "招牌, 下酒, 大份, 传说, 力量涌现, 燃起来了, 和风, 流行喜爱",
+			"tag": "招牌, 下酒, 大份，和风, 传说, 力量涌现, 燃起来了, 流行喜爱",
 			"noTag": "素, 小巧, 猎奇",
 			"drinks": "高酒精, 啤酒, 清酒, 古典",
 			"money": "600 - 1000",
@@ -1209,27 +1189,7 @@ export const npcData = () => {
 				"name": "「」",
 				"effect": ""
 			},
-			"friendship": [{
-					"name": "2",
-					"condition": "",
-					"task": ""
-				},
-				{
-					"name": "3",
-					"condition": "",
-					"task": ""
-				},
-				{
-					"name": "4",
-					"condition": "",
-					"task": ""
-				},
-				{
-					"name": "5",
-					"condition": "",
-					"task": ""
-				}
-			],
+			"friendship": [],
 			"location": "妖怪兽道, 人间之里, 博丽神社, 魔法森林, 红魔馆, 迷途竹林, 妖怪之山, 旧地狱, 地灵殿, 命莲寺, 神灵庙, 太阳花田, 辉针城"
 		},
 		{
@@ -1945,19 +1905,9 @@ export const npcData = () => {
 			"money": "1200 - 1600",
 			"recommendCooks": "毛玉三色冰激凌*肉+水产",
 			"recommendDrinks": "",
-			"rewardCard": {
-				"name": "「」",
-				"effect": ""
-			},
-			"punishCard": {
-				"name": "「」",
-				"effect": ""
-			},
-			"friendship": [{
-				"name": "",
-				"condition": "",
-				"task": ""
-			}],
+			"rewardCard": {},
+			"punishCard": {},
+			"friendship": [],
 			"location": "妖怪兽道, 人间之里, 博丽神社, 魔法森林, 红魔馆, 迷途竹林, 妖怪之山, 命莲寺, 神灵庙, 太阳花田, 辉针城"
 		},
 		{

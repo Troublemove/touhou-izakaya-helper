@@ -1,16 +1,16 @@
 <template>
     <view class="npc">
-        <view class="npc-filter">
+        <view class="tag-filter">
             <view class="touhou-tag" @click="selectLocation('全部')">
                 全部
                 <view v-if="locationFilter.has('全部')" class="touhou-tag-select"></view>
             </view>
-            <scroll-view class="npc-scroll" scroll-x="true" scroll-left="0" :show-scrollbar="false">
+            <uv-scroll-list class="tag-scroll" :indicator="false" >
                 <view class="touhou-tag" v-for="item in locations" :key="item" @click="selectLocation(item)">
                     {{ item }}
                     <view v-if="locationFilter.has(item)" class="touhou-tag-select"></view>
                 </view>
-            </scroll-view>
+            </uv-scroll-list>
         </view>
         <view class="npc-area">
             <view class="npc-area-img">
@@ -35,7 +35,6 @@
     import { initCache } from '@/static/js/common.js'
 
     onShow(() => {
-        initCache()
 		if (!!locations) {
 			locations.value = uni.getStorageSync('locationData')
 		}
@@ -116,58 +115,8 @@
 </script>
 
 <style lang="scss" scoped>
-    .top-back {
-        width: 40px;
-        height: 40px;
-        position: fixed;
-        right: 15px;
-        bottom: 80px;
-        border-radius: 30px;
-        border: 1px solid #fbefcb;
-        background-color: #8D6549;
-        
-        .arrow {
-            position: absolute;
-            left: 11px;
-            top: -1px;
-            width: 0;
-            height: 0;
-            border: 9px solid transparent;
-            border-bottom-color: #fbefcb;
-        }
-        .stick {
-            position: absolute;
-            left: 16px;
-            top: 15px;
-            width: 8px;
-            height: 14px;
-            display: block;
-            background-color: #fbefcb;
-            -webkit-border-radius: 1px;
-            -moz-border-radius: 1px;
-            border-radius: 1px;
-        }
-    }
-    
-    :deep(.uni-scroll-view::-webkit-scrollbar) {
-        display: none;
-    }
-    
     .npc {
         background-color: #8D6549;
-
-        .npc-filter {
-            width: 100%;
-            height: 30px;
-            padding: 5px;
-            display: flex;
-            align-items: center;
-            
-            .npc-scroll {
-                width: calc(100% - 72px);
-                white-space: nowrap;
-            }
-        }
 
         .npc-area {
             padding: 10px 5px;
@@ -175,7 +124,7 @@
 
             .npc-area-img {
                 // height: calc(100vh - 125px);
-                min-height: calc(100vh - 140px);
+                min-height: calc(100dvh - 140px);
                 overflow: auto;
                 display: grid;
                 justify-content: space-evenly;

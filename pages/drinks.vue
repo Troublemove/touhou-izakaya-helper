@@ -1,9 +1,9 @@
 <template>
     <view class="drinks">
 		<view class="drinks-tag">
-			<view class="tag" v-for="item in drinksTags" :key="item" @click="filterDrinks(item)">
+			<view class="drink-tag" v-for="item in drinksTags" :key="item" @click="filterDrinks(item)">
 				 • {{ item }}
-				 <view v-if="drinksFilter.has(item)" class="tag-select"></view>
+				 <view v-if="drinksFilter.has(item)" class="drink-tag-select"></view>
 			</view>
 		</view>
 		<view class="drinks-div">
@@ -28,7 +28,6 @@
     import { initCache } from '@/static/js/common.js'
 
     onShow(() => {
-        initCache()
 		if (!!drinksTags) {
 			drinksTags.value = uni.getStorageSync('drinkTagData')
 		}

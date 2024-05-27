@@ -52,7 +52,7 @@
         showToast({
             type: 'success',
             message: "缓存重置成功!",
-            duration: 1500
+            duration: 1000
         })
     }
     
@@ -111,7 +111,7 @@
             showToast({
                 type: 'success',
                 message: "文件导入成功!",
-                duration: 1500
+                duration: 1000
             })
         } catch (e) {
             console.log(e);
@@ -301,6 +301,7 @@
 		
 		button {
 			margin: 10px;
+            background-color: #fbefcb;
 		}
 	}
 </style>

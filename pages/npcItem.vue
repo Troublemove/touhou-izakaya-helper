@@ -14,8 +14,8 @@
         <view class="npc-item-tab">
             <uv-tabs :list="tabList" @click="clickTab" :scrollable="false"></uv-tabs>
             <view class="npc-item-tab-div" v-if="tabName === tabList[0].name">
-                <view class="npc-item-tab-div-recommend-cook">
-                    <view v-for="item in npc.recommendCooks.split(',')" :key="item">
+                <view>
+                    <view class="npc-item-tab-div-cook-div-cook" v-for="item in npc.recommendCooks.split(',')" :key="item">
                         <view class="npc-item-tab-div-cook-div-cook-left">
                             <image :src="'/static/img/common/' + cookMap[item.split('*')[0]]?.cooker + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
                             <image :src="'/static/img/common/' + cookMap[item.split('*')[0]]?.cooker + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
@@ -37,11 +37,13 @@
                         <view v-if="cookFilter.has(item.trim())" class="touhou-tag-select"></view>
                     </view>
                 </view>
-                <view class="npc-item-tab-div-cook-tag">
+                <view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-if="!!npc.noTag">
                     <view class="touhou-notag-left" v-for="item in npc.noTag.split(',')" :key="item" @click="filterCooks('noTag', item.trim())">
                         {{ item.trim() }}
                         <view v-if="cookNoTagFilter.has(item.trim())" class="touhou-notag-left-select"></view>
                     </view>
+                </view>
+                <view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-else>
                 </view>
                 <view class="npc-item-tab-div-cook-div">
                     <view class="npc-item-tab-div-cook-div-cook" v-for="item in cooks" :key="item.name" @click="openItem(item)">
@@ -77,6 +79,7 @@
                 </view>
             </view>
             <view class="npc-item-tab-div tab-css" v-else-if="tabName === tabList[3].name">
+                <view v-if="!!npc.rewardCard?.effect">
                     <view class="npc-item-tab-div-reward-title">
                         <view>{{ npc.rewardCard.name }}</view>
                     </view>
@@ -89,9 +92,13 @@
                     <view class="npc-item-tab-div-punish-div">
                         <text>{{ npc.punishCard.effect }}</text>
                     </view>
+                </view>
+                <view class="npc-item-tab-div-friend" v-else>
+                    <view><uv-empty text="无符卡！" textColor="#000" textSize="20px" icon="/static/img/common/no-card.png"></uv-empty></view>
+                </view>
             </view>
             <view class="npc-item-tab-div tab-css" v-if="tabName === tabList[4].name">
-                <view class="npc-item-tab-div-friend">
+                <view class="npc-item-tab-div-friend" v-if="npc?.friendship.length > 0">
                     <view class="npc-item-tab-div-friend-item" v-for="item in npc.friendship" :key="item.name">
                         <view class="npc-item-tab-div-friend-item-view">
                             <view class="left">羁绊提升：</view>
@@ -106,6 +113,9 @@
                             <view class="right">{{ item.task }}</view>
                         </view>
                     </view>
+                </view>
+                <view class="npc-item-tab-div-friend" v-else>
+                    <view><uv-empty text="无羁绊！" textColor="#000" textSize="20px" icon="/static/img/common/no-friend.png"></uv-empty></view>
                 </view>
             </view>
         </view>

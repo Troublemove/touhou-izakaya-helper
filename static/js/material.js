@@ -59,7 +59,7 @@ export const materialData = () => {
         {"name":"xhs", "chinese":"西红柿", "tag": "素", "level":"1", "money": "8"},
         {"name":"xh", "chinese":"鲜花", "tag": "梦幻,适合拍照", "level":"3", "money": "45"},
         {"name":"kkd", "chinese":"可可豆", "tag": "甜,不可思议", "level":"3", "money": "22"},
-        {"name":"xlh", "chinese":"西兰花", "tag": "素,家常", "level":"2", "money": "18"},
+        {"name":"xlh", "chinese":"西蓝花", "tag": "素,家常", "level":"2", "money": "18"},
         {"name":"bl", "chinese":"薜荔", "tag": "凉爽,梦幻", "level":"2", "money": "21"},
         {"name":"ye", "chinese":"银耳", "tag": "菌类,清淡", "level":"3", "money": "14"}
     ]

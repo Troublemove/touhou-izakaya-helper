@@ -21,7 +21,7 @@
             </uv-scroll-list>
             <view class="touhou-tag" @click="clear('material')" v-if="materialsFilter.size > 0">清空</view>
         </view>
-        <view class="cook-total">共计 {{cooks.length}} 个</view>
+        <view class="cook-total"><uv-search placeholder="请输入搜索内容" v-model="searchFilter" bgColor="#8D6549" borderColor="#FBEFCB" color="#fff"></uv-search>共计 {{cooks.length}} 个</view>
         <view class="cook-div">
             <view class="cook-div-cook" v-for="item in cooks" :key="item.chinese">
                 <view class="cook-div-cook-left">
@@ -84,6 +84,7 @@
     const cookFilter = ref(new Set())
     const cookNoTagFilter = ref(new Set())
     const materialsFilter = ref(new Set())
+	const searchFilter = ref('')
     const filterCooks = (item) => {
         // 筛选喜好食物
         cooks.value = cookList.value.filter(item => {

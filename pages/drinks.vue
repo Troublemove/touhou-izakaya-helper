@@ -12,8 +12,11 @@
                     <image :src="'/static/img/drink/' + item.name + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
 				</view>
 				<view class="drinks-div-drink-middle">
-					<view><span class="drinks-div-drink-middle-span">{{ item.chinese }}</span></view>
-					<view><span class="drinks-div-drink-middle-span-money">￥{{ item.money }}</span> - Lv {{ item.level }}</view>
+					<view><span class="drinks-div-drink-middle-span">{{ item.chinese }}</span><span class="drinks-div-drink-middle-span-money"> ￥{{ item.money }}</span> - Lv {{ item.level }}</view>
+					<!-- <view></view> -->
+                    <view class="drinks-div-drink-middle-tag">
+                        <view class="drink-tag" v-for="drink in item.tag.split(',')" :key="drink">{{ drink.trim() }}</view>
+                    </view>
 				</view>
 			</view>
 		</view>
@@ -77,19 +80,19 @@
 		}
 		
 		.drinks-div {
-			width: 100vw;
+			width: 98vw;
 			padding: 4px;
-            height: calc(100dvh - 280px);
+            height: calc(100dvh - 240px);
 			overflow: auto;
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			align-content: flex-start;
-			justify-content: flex-start;
-			align-items: flex-start;
+			// display: flex;
+			// flex-direction: row;
+			// flex-wrap: wrap;
+			// align-content: flex-start;
+			// justify-content: flex-start;
+			// align-items: flex-start;
 			
 			.drinks-div-drink {
-				width: 45%;
+				// width: 45%;
 				margin: 5px 2px;
 				padding: 5px 5px;
 				height: auto;
@@ -117,11 +120,16 @@
 					
 					.drinks-div-drink-middle-span {
 						font-weight: bold;
+                        font-size: 16px;
 					}
 					.drinks-div-drink-middle-span-money {
 						font-weight: bold;
 					}
 					
+                    .drinks-div-drink-middle-tag {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
 				}
 			}
 		}

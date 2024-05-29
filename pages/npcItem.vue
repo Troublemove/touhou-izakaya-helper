@@ -4,7 +4,7 @@
     </page-meta>
     <view class="npc-item">
         <view class="npc-item-info" @click="back">
-            <image :src="'/static/img/npc/' + npc.name + '.png'" style="width: 90px; height: 130px;margin-right: 10px;" mode="scaleToFill"/>
+            <image :src="'/static/img/npc/' + npc.name + '.png'" style="width: 100px; height: 130px;margin-right: 10px;" mode="scaleToFill"/>
             <view class="tag-div">
                 <view style="margin: 0px;font-weight: bold;font-size: 20px;">{{ npc.chinese }}</view>
                 <view>持有: {{ npc.money }} 円</view>
@@ -13,24 +13,47 @@
         </view>
         <view class="npc-item-tab">
             <uv-tabs :list="tabList" @click="clickTab" :scrollable="false"></uv-tabs>
-            <view class="npc-item-tab-div" v-if="tabName === tabList[0].name">
-                <view>
+            <view class="npc-item-tab-div tab-css" v-if="tabName === tabList[0].name">
+                <view class="npc-item-tab-div-recommend-cook" v-if="!!npc.recommendCooks">
                     <view class="npc-item-tab-div-cook-div-cook" v-for="item in npc.recommendCooks.split(',')" :key="item">
                         <view class="npc-item-tab-div-cook-div-cook-left">
-                            <image :src="'/static/img/common/' + cookMap[item.split('*')[0]]?.cooker + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
-                            <image :src="'/static/img/common/' + cookMap[item.split('*')[0]]?.cooker + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
+                            <image :src="'/static/img/cook/' + cookMap[item.trim().split('*')[0]]?.name + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill"/>
+                            <image :src="'/static/img/common/' + cookMap[item.trim().split('*')[0]]?.cooker + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill"/>
                         </view>
                         <view class="npc-item-tab-div-cook-div-cook-middle">
-                            <view><span class="npc-item-tab-div-cook-div-cook-middle-span">{{ cookMap[item.split('*')[0]]?.chinese }}</span></view>
-                            <view><span class="npc-item-tab-div-cook-div-cook-middle-span-money">￥{{ cookMap[item.split('*')[0]]?.money }}</span> - Lv {{ cookMap[item.split('*')[0]]?.level }} </view>
-                            <view>{{ cookMap[item.split('*')[0]]?.material }}</view>
-                            <view>{{ item.split('*')[1] }}</view>
+                            <view><span class="npc-item-tab-div-cook-div-cook-middle-span">{{ cookMap[item.trim().split('*')[0]]?.chinese }}</span><span class="npc-item-tab-div-cook-div-cook-middle-span-money"> ￥{{ cookMap[item.trim().split('*')[0]]?.money }}</span> - Lv {{ cookMap[item.trim().split('*')[0]]?.level }} </view>
+                            <view>食材：{{ cookMap[item.trim().split('*')[0]]?.material }}</view>
+                            <view>加料：{{ item.split('*')[1] }}</view>
+                            <view class="cook-div-cook-middle-tag"><view class="touhou-tag" v-for="tag in cookMap[item.trim().split('*')[0]]?.tag.split(',')" :key="tag">{{ tag.trim() }}</view></view>
+                            <view class="cook-div-cook-middle-tag" v-if="!!cookMap[item.trim().split('*')[0]]?.withNo"><view class="touhou-notag-left" v-for="tag in cookMap[item.trim().split('*')[0]]?.withNo.split(',')" :key="tag">{{ tag.trim() }}</view></view>
                         </view>
                     </view>
                 </view>
-                <view class="npc-item-tab-div-recommend-drink"></view>
+                <view class="npc-item-tab-div-recommend-cook" v-if="!npc.recommendCooks">
+                    <view class="npc-item-tab-div-cook-div-cook" style="height: 50px;display: flex;justify-content: center;">
+                        无推荐!
+                    </view>
+                </view>
+                <view class="npc-item-tab-div-recommend-cook" v-if="!!npc.recommendDrinks">
+                    <view class="npc-item-tab-div-cook-div-cook" v-for="item in npc.recommendDrinks.split(',')" :key="item">
+                        <view class="npc-item-tab-div-cook-div-cook-left">
+                            <image :src="'/static/img/drink/' + drinksMap[item.trim().split('*')[0]]?.name + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
+                        </view>
+                        <view class="npc-item-tab-div-cook-div-cook-middle">
+                            <view><span class="npc-item-tab-div-cook-div-cook-middle-span">{{ drinksMap[item.trim().split('*')[0]]?.chinese }}</span><span class="npc-item-tab-div-cook-div-cook-middle-span-money"> ￥{{ drinksMap[item.trim().split('*')[0]]?.money }}</span> - Lv {{ drinksMap[item.trim().split('*')[0]]?.level }}</view>
+                            <view class="cook-div-cook-middle-tag">
+                                <view class="drink-tag" v-for="drink in drinksMap[item.trim().split('*')[0]]?.tag.split(',')" :key="drink">{{ drink.trim() }}</view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="npc-item-tab-div-recommend-cook" v-if="!npc.recommendDrinks">
+                    <view class="npc-item-tab-div-cook-div-cook" style="height: 50px;display: flex;justify-content: center;">
+                        无推荐!
+                    </view>
+                </view>
             </view>
-            <view class="npc-item-tab-div" v-if="tabName === tabList[1].name">
+            <view class="npc-item-tab-div tab-css" v-if="tabName === tabList[1].name">
                 <view class="npc-item-tab-div-cook-tag" style="height: 68px;">
                     <view class="touhou-tag" v-for="item in npc.tag.split(',')" :key="item" @click="filterCooks('tag', item.trim())">
                          • {{ item.trim() }}
@@ -48,7 +71,7 @@
                 <view class="npc-item-tab-div-cook-div">
                     <view class="npc-item-tab-div-cook-div-cook" v-for="item in cooks" :key="item.name" @click="openItem(item)">
                         <view class="npc-item-tab-div-cook-div-cook-left">
-                            <image :src="'/static/img/common/' + item.cooker + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
+                            <image :src="'/static/img/cook/' + item.name + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
                             <image :src="'/static/img/common/' + item.cooker + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
                         </view>
                         <view class="npc-item-tab-div-cook-div-cook-middle">
@@ -59,7 +82,7 @@
                     </view>
                 </view>
             </view>
-            <view class="npc-item-tab-div" v-if="tabName === tabList[2].name">
+            <view class="npc-item-tab-div tab-css" v-if="tabName === tabList[2].name">
                 <view class="npc-item-tab-div-drinks-tag">
                     <view class="drink-tag" v-for="item in npc.drinks.split(',')" :key="item" @click="filterDrinks(item.trim())">
                          • {{ item.trim() }}
@@ -115,7 +138,7 @@
                     </view>
                 </view>
                 <view class="npc-item-tab-div-friend" v-else>
-                    <view><uv-empty text="无羁绊！" textColor="#000" textSize="20px" icon="/static/img/common/no-friend.png"></uv-empty></view>
+                    <view><uv-empty text="无羁绊！" textColor="#000" textSize="20px" icon="/static/img/common/no-friend.png" iconSize="220"></uv-empty></view>
                 </view>
             </view>
         </view>
@@ -275,12 +298,64 @@
             
             .npc-item-tab-div {
                 // min-height: calc(100dvh - 250px);
-                max-height: calc(100dvh - 250px);
+                height: calc(100dvh - 220px);
+                // max-height: calc(100dvh - 250px);
                 overflow: auto;
                 padding: 5px;
                 // background-color: #d7ad95;
                 color: #000000;
                 background-color: #CFBFA2;
+                
+                .npc-item-tab-div-recommend-cook {
+                    height: 48%;
+                    margin: 5px;
+                    overflow: auto;
+                    
+                    .npc-item-tab-div-cook-div-cook {
+                        margin: 5px 2px;
+                        padding: 5px 5px;
+                        height: auto;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        border-radius: 10px;
+                        background-color: #FBEFCB;
+                
+                        .npc-item-tab-div-cook-div-cook-left {
+                            width: 50px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                        }
+                        
+                        .npc-item-tab-div-cook-div-cook-middle {
+                            margin-left: 8px;
+                            font-size: 14px;
+                            width: calc(100vw - 55px);
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-start;
+                            justify-content: space-between;
+                            
+                            .npc-item-tab-div-cook-div-cook-middle-span {
+                                font-weight: bold;
+                                font-size: 16px;
+                            }
+                            .npc-item-tab-div-cook-div-cook-middle-span-money {
+                                font-weight: bold;
+                            }
+                            
+                            .cook-div-cook-middle-tag {
+                                display: flex;
+                                flex-wrap: wrap;
+                            }
+                        }
+                    }
+                }
+                
+                .npc-item-tab-div-recommend-cook::-webkit-scrollbar {
+                  display: none;
+                }
                 
                 .npc-item-tab-div-cook-tag {
                     padding: 5px 5px;
@@ -291,9 +366,11 @@
                 
                 .npc-item-tab-div-cook-div {
                     width: 100%;
-                    min-height: calc(100dvh - 370px);
-                    max-height: calc(100dvh - 370px);
+                    height: calc(100dvh - 340px);
+                    // min-height: calc(100dvh - 370px);
+                    // max-height: calc(100dvh - 370px);
                     overflow: auto;
+                    border-radius: 10px;
                     display: flex;
                     flex-direction: row;
                     flex-wrap: wrap;
@@ -346,9 +423,11 @@
                     height: 60px;
                 }
                 .npc-item-tab-div-drinks-div {
-                    min-height: calc(100dvh - 320px);
-                    max-height: calc(100dvh - 320px);
+                    height: calc(100dvh - 190px);
+                    // min-height: calc(100dvh - 320px);
+                    // max-height: calc(100dvh - 320px);
                     overflow: auto;
+                    border-radius: 10px;
                     display: flex;
                     flex-direction: row;
                     flex-wrap: wrap;
@@ -444,7 +523,7 @@
                 }
             }
             .tab-css {
-                height: calc(100dvh - 250px);
+                height: calc(100dvh - 220px);
             }
             .npc-item-tab-div::-webkit-scrollbar {
               display: none;

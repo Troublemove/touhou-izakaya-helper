@@ -21,14 +21,15 @@
             </uv-scroll-list>
             <view class="touhou-tag" @click="clear('material')" v-if="materialsFilter.size > 0">清空</view>
         </view>
+        <view class="cook-total">共计 {{cooks.length}} 个</view>
         <view class="cook-div">
             <view class="cook-div-cook" v-for="item in cooks" :key="item.chinese">
                 <view class="cook-div-cook-left">
-                    <image :src="'/static/img/common/' + item.cooker + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
-                    <image :src="'/static/img/common/' + item.cooker + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
+                    <image :src="'/static/img/cook/' + item.name + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill"/>
+                    <image :src="'/static/img/common/' + item.cooker + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill"/>
                 </view>
                 <view class="cook-div-cook-middle">
-                    <view><span class="cook-div-cook-middle-span">{{ item.chinese }}<span class="cook-div-cook-middle-span-money">￥{{ item.money }}</span> - Lv {{ item.level }}</span></view>
+                    <view><span class="cook-div-cook-middle-span">{{ item.chinese }}</span><span class="cook-div-cook-middle-span-money"> ￥{{ item.money }}</span> - Lv {{ item.level }}</view>
                     <view><span class="cook-div-cook-middle-span-money">{{ item.material }}</span></view>
                     <view class="cook-div-cook-middle-tag"><view class="touhou-tag" v-for="item in item.tag.split(',')" :key="item">{{ item.trim() }}</view></view>
                     <view class="cook-div-cook-middle-tag" v-if="!!item.withNo"><view class="touhou-notag-left" v-for="item in item.withNo.split(',')" :key="item">{{ item.trim() }}</view></view>
@@ -180,24 +181,31 @@
             justify-content: space-between;
             
             .tag-scroll {
-                width: calc(100% - 105px);
+                width: calc(100% - 108px);
                 white-space: nowrap;
             }
         }
         
+        .cook-total {
+            text-align: center;
+            color: #fff;
+            font-size: 18px;
+        }
+        
         .cook-div {
             margin: 5px;
-            max-height: calc(100dvh - 208px);
-            min-height: calc(100dvh - 208px);
+            height: calc(100dvh - 188px);
+            // max-height: calc(100dvh - 198px);
+            // min-height: calc(100dvh - 198px);
             overflow: auto;
             display: flex;
             align-items: center;
             flex-direction: column;
             border-radius: 15px;
-            box-shadow: inset 0px 0px 10px 1px #000000;
+            // box-shadow: inset 0px 0px 10px 1px #000000;
             
             .cook-div-cook {
-                width: 90%;
+                width: 94dvw;
                 margin: 5px 2px;
                 padding: 5px 5px;
                 height: auto;
@@ -225,6 +233,7 @@
                     
                     .cook-div-cook-middle-span {
                         font-weight: bold;
+                        font-size: 16px;
                     }
                     .cook-div-cook-middle-span-money {
                         font-weight: bold;
@@ -250,6 +259,10 @@
                 display: flex;
                 flex-wrap: wrap;
                 align-items: center;
+                
+                .touhou-tag, .touhou-notag-left, .drink-tag {
+                    margin: 5px;
+                }
             }
         }
     }

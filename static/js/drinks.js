@@ -5,7 +5,7 @@ export const drinksData = () => {
     return [
         {"name":"lc", "chinese":"绿茶", "tag": "无酒精", "level":"1", "money": "1"},
         {"name":"qj", "chinese":"雀酒", "tag": "中酒精,可加冰,可加热,清酒,辛", "level":"2", "money": "50"},
-        {"name":"gwhb", "chinese":"果味HighBall", "tag": "低酒精,可加冰,鸡尾酒,西洋酒,水果,甘,苦", "level":"1", "money": "12"},
+        {"name":"gwhb", "chinese":"果味High Ball", "tag": "低酒精,可加冰,鸡尾酒,西洋酒,水果,甘,苦", "level":"1", "money": "12"},
         {"name":"gws", "chinese":"果味SOUR", "tag": "低酒精,可加冰,烧酒,鸡尾酒,水果,甘,苦", "level":"1", "money": "12"},
         {"name":"q", "chinese":"淇", "tag": "低酒精,可加冰,清酒,鸡尾酒,气泡,甘,辛,苦", "level":"1", "money": "18"},
         {"name":"stj", "chinese":"水獭祭", "tag": "中酒精,可加冰,可加热,清酒,直饮", "level":"3", "money": "130"},

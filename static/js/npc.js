@@ -10,7 +10,7 @@ export const npcData = () => {
 			"noTag": "素, 清淡, 凉爽",
 			"drinks": "低酒精, 可加冰",
 			"money": "200 - 400",
-			"recommendCooks": "香炸蝉蜕*鸡蛋2222, 猩红恶魔蛋糕*蝉蜕",
+			"recommendCooks": "香炸蝉蜕*鸡蛋, 猩红恶魔蛋糕*蝉蜕, 香炸蝉蜕*鸡蛋, 猩红恶魔蛋糕*蝉蜕",
 			"recommendDrinks": "果味High Ball, 果味SOUR, 淇",
 			"rewardCard": {
 				"name": "灯符「荧光现象」",
@@ -440,7 +440,7 @@ export const npcData = () => {
 			"tag": "甜, 猎奇, 凉爽, 流行厌恶, 适合拍照",
 			"noTag": "下酒, 昂贵, 流行喜爱, 文化底蕴",
 			"drinks": "可加冰, 甘, 水果",
-			"money": "100 - 200",
+			"money": "100 - 200 (咱!没!钱!)",
 			"recommendCooks": "凉菜雕花*蝉蜕, 毛玉三色冰激凌*蝉蜕, 麻薯*蝉蜕",
 			"recommendDrinks": "",
 			"rewardCard": {

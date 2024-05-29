@@ -35,6 +35,8 @@
     import { initCache } from '@/static/js/common.js'
 
     onShow(() => {
+        uni.clearStorage()
+        initCache()
 		if (!!locations) {
 			locations.value = uni.getStorageSync('locationData')
 		}

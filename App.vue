@@ -37,6 +37,7 @@
     
 	.touhou-tag {
 		display: flex;
+        align-items: center;
 		margin: 3px 2px;
 		padding: 2px 8px;
 		color: #830000;
@@ -75,6 +76,7 @@
 	
 	.touhou-notag-left {
 		display: flex;
+        align-items: center;
 		margin: 3px 2px;
 		padding: 2px 8px;
 		color: #E40D0D;
@@ -115,6 +117,7 @@
 	
     .drink-tag {
         display: flex;
+        align-items: center;
         margin: 3px 2px;
         padding: 2px 8px;
         color: #A45C22;

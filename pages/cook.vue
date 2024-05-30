@@ -21,7 +21,25 @@
             </uv-scroll-list>
             <view class="touhou-tag" @click="clear('material')" v-if="materialsFilter.size > 0">清空</view>
         </view>
-        <view class="cook-total"><uv-search placeholder="请输入搜索内容" v-model="searchFilter" bgColor="#8D6549" borderColor="#FBEFCB" color="#fff"></uv-search>共计 {{cooks.length}} 个</view>
+        <view class="cooker-select">
+            <uv-checkbox-group v-model="cookerValue" placement="row" labelColor="#e6b4a6" labelSize="16px" activeColor="#8d6549" inactiveColor="#fbefcb" @change="selectCooker">
+                <uv-checkbox v-for="(item, index) in cookerList" :key="index" :label="item.name" :name="item.value" ></uv-checkbox>
+            </uv-checkbox-group>
+        </view>
+        <view class="cook-total">
+            <view class="cook-total-view" style="width: 50%;">
+                <uv-search placeholder="请输入料理名称" v-model="searchFilter" bgColor="#8D6549" borderColor="#FBEFCB" searchIconColor="#e0afa0" color="#e0afa0" :showAction="false" height="55rpx" @change="filterCooks('')"></uv-search>
+            </view>
+            <view class="cook-total-view" style="width: 30%;">
+                <uv-drop-down ref="dropDown" sign="cookSort" text-color="#fff" text-active-color="#dbaa9b">
+                    <uv-drop-down-item name="normal" type="2" :label="sortDefaultValue.label" :value="sortDefaultValue.value"></uv-drop-down-item>
+                    <uv-drop-down-popup sign="cookSort" @clickItem="changeSort" :currentDropItem="sortList"></uv-drop-down-popup>
+                </uv-drop-down>
+            </view>
+            <view class="cook-total-view" style="width: 10%;color: #e0afa0;">
+                {{cooks.length}}
+            </view>
+        </view>
         <view class="cook-div">
             <view class="cook-div-cook" v-for="item in cooks" :key="item.chinese">
                 <view class="cook-div-cook-left">
@@ -76,6 +94,47 @@
         filterCooks('')
     })
     
+    const cookerValue = ref([''])
+    const cookerFilter = ref(new Set())
+    const cookerList = ref([
+        {name: '煮锅', value: 'cook1', disabled: false},
+        {name: '烤架', value: 'cook2', disabled: false},
+        {name: '油锅', value: 'cook3', disabled: false},
+        {name: '蒸锅', value: 'cook4', disabled: false},
+        {name: '料理台', value: 'cook5', disabled: false}
+    ])
+    const selectCooker = (item) => {
+        cookerFilter.value.clear()
+        item.forEach(cooker => {
+            cookerFilter.value.add(cooker)
+        })
+        filterCooks('')
+    }
+    
+    const sortDefaultValue = ref({label: '默认排序', value: 'normal'})
+    const sortList = ref({
+        label: '默认排序',
+        value: 'normal',
+        activeIndex: 0,
+        color: '#333',
+        activeColor: '#2878ff',
+        child: [{
+            label: '默认排序',
+            value: 'normal'
+        }, {
+            label: '价格升序',
+            value: 'moneyUp'
+        }, {
+            label: '价格降序',
+            value: 'moneyDown'
+        }]
+    })
+    const changeSort = (e) => {
+        sortDefaultValue.value.label = e.label
+        sortDefaultValue.value.value = e.value
+        filterCooks('')
+    }
+    
     const cookTags = ref(uni.getStorageSync('cookTagData'))
     const cookNoTags = ref(uni.getStorageSync('cookTagData'))
     const cookList = ref(uni.getStorageSync('cookData'))
@@ -86,8 +145,11 @@
     const materialsFilter = ref(new Set())
 	const searchFilter = ref('')
     const filterCooks = (item) => {
-        // 筛选喜好食物
         cooks.value = cookList.value.filter(item => {
+            // 筛选搜索
+            if (!!searchFilter.value && !item.chinese.includes(searchFilter.value)) {
+                return false
+            }
             let tagList = item.tag.split(",")
             let materialList = item.material.split(",")
             let tagfilter = [...cookFilter.value].concat()
@@ -97,6 +159,11 @@
             if (tagList.length < cookFilter.value.size) {
                 return false
             }
+            // 筛选厨具
+            if (cookerFilter.value.size > 0 && !cookerFilter.value.has(item.cooker)) {
+                return false
+            }
+            // 筛选喜好食物
             tagList.forEach(tag => {
                 tagfilter = tagfilter.filter(item => item !== tag.trim())
                 cookNoTagFilter.value.forEach(noTag => {
@@ -111,6 +178,16 @@
             })
             return tagfilter.length === 0 && tagNoResult.size === 0 && materialfilter.length === 0
         })
+        // 排序
+        if ('moneyUp' === sortDefaultValue.value.value) {
+            cooks.value = cooks.value.sort((x, y) => {
+                return x.money - y.money
+            })
+        } else if ('moneyDown' === sortDefaultValue.value.value) {
+            cooks.value = cooks.value.sort((x, y) => {
+                return -(x.money - y.money)
+            })
+        }
     }
     
     const tagModal = ref(false)
@@ -186,16 +263,27 @@
                 white-space: nowrap;
             }
         }
+        .uv-checkbox-group--row {
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 10px;
+        }
         
         .cook-total {
+            margin: 0px 5px;
             text-align: center;
             color: #fff;
-            font-size: 18px;
+            display: flex;
+            align-items: center;
+            
+            .cook-total-view {
+                margin: 5px;
+            }
         }
         
         .cook-div {
             margin: 5px;
-            height: calc(100dvh - 188px);
+            height: calc(100dvh - 230px);
             // max-height: calc(100dvh - 198px);
             // min-height: calc(100dvh - 198px);
             overflow: auto;
@@ -273,5 +361,22 @@
     }
     :deep(.uv-modal__button-group__wrapper--hover) {
         background-color: #fbefcb;
+    }
+    :deep(.uv-drop-down) {
+        width: 96px;
+        height: 55rpx;
+        background-color: #8d6549;
+        border: 1px solid #fbefcb;
+        border-radius: 20px;;
+    }
+    :deep(.uv-dp__container) {
+        width: 35%;
+        float: right;
+        margin-right: 14%;
+        background-color: #8D6549;
+        
+        span {
+            color: #e6b4a6;
+        }
     }
 </style>

@@ -233,7 +233,7 @@ export const npcData = () => {
 			"drinks": "啤酒, 烧酒",
 			"money": "250 - 400",
 			"recommendCooks": "猪肉盖浇饭*海苔",
-			"recommendDrinks": "啤酒",
+			"recommendDrinks": "超ZUN啤酒",
 			"rewardCard": {
 				"name": "「香霖堂购物节」",
 				"effect": "获得一张香霖堂购物7折的打折卡,仅限次日使用,过期作废。"
@@ -496,7 +496,7 @@ export const npcData = () => {
 			"noTag": "昂贵, 高级, 不可思议",
 			"drinks": "烧酒, 辛, 苦",
 			"money": "300 - 600",
-			"recommendCooks": "力量汤*葡萄 辣椒, 水煮鱼",
+			"recommendCooks": "力量汤*葡萄+辣椒, 水煮鱼",
 			"recommendDrinks": "",
 			"rewardCard": {
 				"name": "不死「火鸟 凤翼天翔」",

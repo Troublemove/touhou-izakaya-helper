@@ -82,7 +82,8 @@
 		.drinks-div {
 			width: 98vw;
 			padding: 4px;
-            height: calc(100dvh - 240px);
+            height: calc(100dvh - 230px);
+            border-radius: 10px;
 			overflow: auto;
 			// display: flex;
 			// flex-direction: row;

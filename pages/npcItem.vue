@@ -22,8 +22,7 @@
                         </view>
                         <view class="npc-item-tab-div-cook-div-cook-middle">
                             <view><span class="npc-item-tab-div-cook-div-cook-middle-span">{{ cookMap[item.trim().split('*')[0]]?.chinese }}</span><span class="npc-item-tab-div-cook-div-cook-middle-span-money"> ￥{{ cookMap[item.trim().split('*')[0]]?.money }}</span> - Lv {{ cookMap[item.trim().split('*')[0]]?.level }} </view>
-                            <view>食材：{{ cookMap[item.trim().split('*')[0]]?.material }}</view>
-                            <view>加料：{{ item.split('*')[1] }}</view>
+                            <view>食材：{{ cookMap[item.trim().split('*')[0]]?.material }} <text class="npc-item-tab-div-cook-div-cook-middle-material" v-if="!!item.split('*')[1]">* {{ item.split('*')[1] }}</text></view>
                             <view class="cook-div-cook-middle-tag"><view class="touhou-tag" v-for="tag in cookMap[item.trim().split('*')[0]]?.tag.split(',')" :key="tag">{{ tag.trim() }}</view></view>
                             <view class="cook-div-cook-middle-tag" v-if="!!cookMap[item.trim().split('*')[0]]?.withNo"><view class="touhou-notag-left" v-for="tag in cookMap[item.trim().split('*')[0]]?.withNo.split(',')" :key="tag">{{ tag.trim() }}</view></view>
                         </view>
@@ -274,6 +273,25 @@
         color: #000000;
     }
 	
+	@keyframes masked-animation {
+	    0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: 0 0;
+        }
+	}
+    .npc-item-tab-div-cook-div-cook-middle-material {
+        background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+        color: transparent;
+        -webkit-background-clip: text;
+        background-size: 200% 100%;
+        animation-name: masked-animation;
+        animation-duration: 2s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+    }
+    
     .npc-item {
         width: 100vw;
         height: calc(100dvh - 10px);
@@ -423,7 +441,7 @@
                     height: 60px;
                 }
                 .npc-item-tab-div-drinks-div {
-                    height: calc(100dvh - 190px);
+                    height: calc(100dvh - 290px);
                     // min-height: calc(100dvh - 320px);
                     // max-height: calc(100dvh - 320px);
                     overflow: auto;

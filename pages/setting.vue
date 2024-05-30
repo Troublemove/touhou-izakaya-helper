@@ -1,5 +1,6 @@
 <template>
     <view class="setting">
+        <uv-notice-bar :text="notice" color="#830000"></uv-notice-bar>
         <uv-toast ref="toast"></uv-toast>
         <button @click="clearCacheModal.open()">重置缓存</button>
         <button @click="chooseFile()">读取配置文件</button>
@@ -20,6 +21,7 @@
         initCache
     } from '@/static/js/common.js'
 	
+    const notice = ref('该软件永久免费使用！')
 	const fileData = reactive({
 		'npc': 'npcData',
 		'npcRecommend': 'npcData',
@@ -295,7 +297,7 @@
 
 <style lang="scss" scoped>
 	.setting {
-		height: calc(100dvh - 70px);
+		height: calc(100dvh - 120px);
 	    background-color: #8D6549;
 		padding: 10px;
 		

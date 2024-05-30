@@ -3,7 +3,7 @@
         // {
         //     "path": "pages/index/index",
         //     "style": {
-        //         "navigationBarTitleText": "夜雀助手",
+        //         "navigationBarTitleText": "夜雀辅助",
         //         "navigationBarBackgroundColor": "#8D6549",
         //         "backgroundColor": "#8D6549"
         //     }
@@ -11,7 +11,7 @@
         {
             "path": "pages/npc",
             "style": {
-                "navigationBarTitleText": "夜雀助手",
+                "navigationBarTitleText": "夜雀辅助",
                 "backgroundColor": "#8D6549"
             }
         },
@@ -25,14 +25,14 @@
         {
             "path": "pages/drinks",
             "style": {
-                "navigationBarTitleText": "夜雀助手",
+                "navigationBarTitleText": "夜雀辅助",
                 "backgroundColor": "#8D6549"
             }
         },
         {
             "path": "pages/cook",
             "style": {
-                "navigationBarTitleText": "夜雀助手",
+                "navigationBarTitleText": "夜雀辅助",
                 "backgroundColor": "#8D6549"
             }
         },

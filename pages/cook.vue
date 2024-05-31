@@ -49,7 +49,7 @@
                 <view class="cook-div-cook-middle">
                     <view><span class="cook-div-cook-middle-span">{{ item.chinese }}</span><span class="cook-div-cook-middle-span-money"> ￥{{ item.money }}</span> - Lv {{ item.level }}</view>
                     <view><span class="cook-div-cook-middle-span-money">{{ item.material }}</span></view>
-                    <view class="cook-div-cook-middle-tag"><view class="touhou-tag" v-for="item in item.tag.split(',')" :key="item">{{ item.trim() }}</view></view>
+                    <view class="cook-div-cook-middle-tag"><view class="touhou-tag" v-for="item in item.tag.split(',')" :key="item">{{ item.trim() }}<view v-if="cookFilter.has(item.trim())" class="touhou-tag-select"></view></view></view>
                     <view class="cook-div-cook-middle-tag" v-if="!!item.withNo"><view class="touhou-notag-left" v-for="item in item.withNo.split(',')" :key="item">{{ item.trim() }}</view></view>
                 </view>
             </view>
@@ -64,7 +64,25 @@
                     <view class="touhou-notag-left" v-for="item in chooseItem.value" :key="item" @click="chooseTagFilter(chooseItem.type, item)">{{ item }}<view v-if="cookNoTagFilter.has(item)" class="touhou-notag-left-select"></view></view>
                 </view>
                 <view class="modal-div-tag" v-if="chooseItem.type === 'material'">
-                    <view class="drink-tag" v-for="item in chooseItem.value" :key="item" @click="chooseTagFilter(chooseItem.type, item.chinese)">{{ item.chinese }}<view v-if="materialsFilter.has(item.chinese)" class="drink-tag-select"></view></view>
+                    <view class="material-div">
+                        <view class="matrial-tag">
+                            <view class="drink-tag" v-for="item in materialTags" :key="item" @click="selectMaterialTag(item)">{{ item }}<view v-if="materialTagsFilter.has(item)" class="drink-tag-select"></view></view>
+                        </view>
+                        <view class="matrial-div">
+                            <view class="material-item" v-for="item in chooseItem.value" :key="item" @click="chooseTagFilter(chooseItem.type, item.chinese)">
+                                <view class="material-item-left">
+                                    <image :src="'/static/img/material/' + item.name + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill"/>
+                                </view>
+                                <view class="material-item-middle">
+                                    <view>{{ item.chinese }} ￥{{ item.money }} - Lv {{ item.level }}</view>
+                                    <view class="material-item-middle-tag">
+                                        <view class="drink-tag" v-for="tag in item.tag.split(',')" :key="tag">{{ tag }}<view v-if="materialTagsFilter.has(tag)" class="drink-tag-select"></view></view>
+                                    </view>
+                                </view>
+                                <view class="material-item-right" v-show="materialsFilter.has(item.chinese)"></view>
+                            </view>
+                        </view>
+                    </view>
                 </view>
             </view>
         </uv-modal>
@@ -90,6 +108,9 @@
 		}
 		if (!!materials) {
 			materials.value = uni.getStorageSync('materialData')
+            if (!!materialTags) {
+                initMaterialTags()
+            }
 		}
         filterCooks('')
     })
@@ -139,6 +160,18 @@
     const cookNoTags = ref(uni.getStorageSync('cookTagData'))
     const cookList = ref(uni.getStorageSync('cookData'))
     const materials = ref(uni.getStorageSync('materialData'))
+    const materialTags = ref(new Set())
+    const materialTagsFilter = ref(new Set())
+    const initMaterialTags = () => {
+        materials.value.forEach(item => {
+            item.tag.split(',').forEach(tag => {
+                let t = tag.trim()
+                if (!!t) {
+                    materialTags.value.add(tag.trim())
+                }
+            })
+        })
+    }
     const cooks = ref('')
     const cookFilter = ref(new Set())
     const cookNoTagFilter = ref(new Set())
@@ -194,6 +227,7 @@
     const chooseItem = ref('')
     const openModel = (item) => {
         chooseItem.value = ''
+        materialTagsFilter.value.clear()
         if ('like' === item) {
             chooseItem.value = {
                 "type": item,
@@ -244,6 +278,22 @@
             }
         }
         filterCooks('')
+    }
+    // model选择食材tag
+    const selectMaterialTag = (name) => {
+        if (materialTagsFilter.value.has(name)) {
+            materialTagsFilter.value.delete(name)
+        } else {
+            materialTagsFilter.value.add(name)
+        }
+        chooseItem.value.value = materials.value.filter(item => {
+            let tagList = item.tag.split(",")
+            let materialTagsfilter = [...materialTagsFilter.value].concat()
+            tagList.forEach(tag => {
+                materialTagsfilter = materialTagsfilter.filter(item => item !== tag.trim())
+            })
+            return materialTagsfilter.length === 0
+        })
     }
 </script>
 
@@ -349,18 +399,85 @@
                 flex-wrap: wrap;
                 align-items: center;
                 
-                .touhou-tag, .touhou-notag-left, .drink-tag {
+                .touhou-tag, .touhou-notag-left {
                     margin: 5px;
+                }
+                
+                .material-div {
+                    height: 75dvh;
+                    overflow: auto;
+                    
+                    .matrial-tag {
+                        width: 100%;
+                        height: 190px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        flex-direction: row;
+                        
+                        .drink-tag {
+                            margin: 2px;
+                        }
+                    }
+                    .matrial-div {
+                        margin-top: 10px;
+                        max-height: calc(75dvh - 200px);
+                        overflow: auto;
+                        
+                        .material-item {
+                            color: #e6b4a6;
+                            margin: 5px 2px;
+                            padding: 5px 5px;
+                            height: auto;
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-start;
+                            
+                            .material-item-left {
+                                width: 50px;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;
+                            }
+                            
+                            .material-item-middle {
+                                width: calc(100% - 70px);
+                                margin-left: 8px;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: flex-start;
+                                justify-content: space-between;
+                                
+                                .material-item-middle-tag {
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                }
+                            }
+                            .material-item-right {
+                                content: '';
+                                width: 5px;
+                                height: 15px;
+                                border: 3px solid #E40D0D;
+                                border-top-color: transparent;
+                                border-left-color: transparent;
+                                transform: rotate(45deg);
+                            }
+                        }
+                    }
+                }
+                
+                .material-div::-webkit-scrollbar {
+                    display: none;
                 }
             }
         }
     }
     
     :deep(.uv-popup__content) {
+        padding: 10px;
         background-color: rgba(141, 101, 73, 0.5) !important;
     }
-    :deep(.uv-modal__button-group__wrapper--hover) {
-        background-color: #fbefcb;
+    :deep(.uv-modal__content) {
+        padding: 10px !important;
     }
     :deep(.uv-drop-down) {
         width: 96px;

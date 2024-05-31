@@ -91,25 +91,31 @@
                 list += line;
             }
             console.log('fileContent', list);
-            let json = JSON.parse(list)
-			if ('npcRecommend' !== fileDataName) {
-				uni.setStorageSync(fileData[fileDataName], json)
-			} else {
-				// 处理文件内容
-                let jsonMap = ref([])
-                json.forEach(item => {
-                    jsonMap.value[item.chinese] = item
-                })
-                let npcDatas = uni.getStorageSync(fileData[fileDataName])
-                npcDatas.forEach(item => {
-                    if (jsonMap.value.hasOwnProperty(item.chinese)) {
-                        for (keys in jsonMap.value[item.chinese]) {
-                            item[keys] = jsonMap.value[item.chinese][keys]
+            let json = ''
+            if ('location' === fileDataName || 'drinkTag' === fileDataName || 'cookTag' === fileDataName) {
+                
+            } else {
+                json = JSON.parse(list)
+                if ('npcRecommend' !== fileDataName) {
+                	uni.setStorageSync(fileData[fileDataName], json)
+                } else {
+                	// 处理文件内容
+                    let jsonMap = ref([])
+                    json.forEach(item => {
+                        jsonMap.value[item.chinese] = item
+                    })
+                    let npcDatas = uni.getStorageSync(fileData[fileDataName])
+                    npcDatas.forEach(item => {
+                        if (jsonMap.value.hasOwnProperty(item.chinese)) {
+                            for (keys in jsonMap.value[item.chinese]) {
+                                item[keys] = jsonMap.value[item.chinese][keys]
+                            }
                         }
-                    }
-                })
-                uni.setStorageSync(fileData[fileDataName], npcDatas)
-			}
+                    })
+                    uni.setStorageSync(fileData[fileDataName], npcDatas)
+                }
+            }
+			
             showToast({
                 type: 'success',
                 message: "文件导入成功!",
@@ -136,6 +142,7 @@
         }
     }
 
+    // 打开手机文件管理器选择文件
     const chooseFile = () => {
         var CODE_REQUEST = 1000;
         var main = plus.android.runtimeMainActivity();

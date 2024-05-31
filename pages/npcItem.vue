@@ -23,7 +23,9 @@
                         <view class="npc-item-tab-div-cook-div-cook-middle">
                             <view><span class="npc-item-tab-div-cook-div-cook-middle-span">{{ cookMap[item.trim().split('*')[0]]?.chinese }}</span><span class="npc-item-tab-div-cook-div-cook-middle-span-money"> ￥{{ cookMap[item.trim().split('*')[0]]?.money }}</span> - Lv {{ cookMap[item.trim().split('*')[0]]?.level }} </view>
                             <view>食材：{{ cookMap[item.trim().split('*')[0]]?.material }} <text class="npc-item-tab-div-cook-div-cook-middle-material" v-if="!!item.split('*')[1]">* {{ item.split('*')[1] }}</text></view>
-                            <view class="cook-div-cook-middle-tag"><view class="touhou-tag" v-for="tag in cookMap[item.trim().split('*')[0]]?.tag.split(',')" :key="tag">{{ tag.trim() }}</view></view>
+                            <view class="cook-div-cook-middle-tag">
+                                <view class="touhou-tag" v-for="tag in cookMap[item.trim().split('*')[0]]?.tag.split(',')" :key="tag">{{ tag.trim() }}<view v-if="npc.tag.includes(tag.trim())" class="touhou-tag-select"></view></view>
+                            </view>
                             <view class="cook-div-cook-middle-tag" v-if="!!cookMap[item.trim().split('*')[0]]?.withNo"><view class="touhou-notag-left" v-for="tag in cookMap[item.trim().split('*')[0]]?.withNo.split(',')" :key="tag">{{ tag.trim() }}</view></view>
                         </view>
                     </view>
@@ -41,7 +43,7 @@
                         <view class="npc-item-tab-div-cook-div-cook-middle">
                             <view><span class="npc-item-tab-div-cook-div-cook-middle-span">{{ drinksMap[item.trim().split('*')[0]]?.chinese }}</span><span class="npc-item-tab-div-cook-div-cook-middle-span-money"> ￥{{ drinksMap[item.trim().split('*')[0]]?.money }}</span> - Lv {{ drinksMap[item.trim().split('*')[0]]?.level }}</view>
                             <view class="cook-div-cook-middle-tag">
-                                <view class="drink-tag" v-for="drink in drinksMap[item.trim().split('*')[0]]?.tag.split(',')" :key="drink">{{ drink.trim() }}</view>
+                                <view class="drink-tag" v-for="drink in drinksMap[item.trim().split('*')[0]]?.tag.split(',')" :key="drink">{{ drink.trim() }}<view v-if="npc.drinks.includes(drink.trim())" class="touhou-tag-select"></view></view>
                             </view>
                         </view>
                     </view>
@@ -67,16 +69,19 @@
                 </view>
                 <view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-else>
                 </view>
-                <view class="npc-item-tab-div-cook-div">
+                <view class="npc-item-tab-div-recommend-cook npc-item-tab-div-cook-div">
                     <view class="npc-item-tab-div-cook-div-cook" v-for="item in cooks" :key="item.name" @click="openItem(item)">
                         <view class="npc-item-tab-div-cook-div-cook-left">
                             <image :src="'/static/img/cook/' + item.name + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
                             <image :src="'/static/img/common/' + item.cooker + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
                         </view>
                         <view class="npc-item-tab-div-cook-div-cook-middle">
-                            <view><span class="npc-item-tab-div-cook-div-cook-middle-span">{{ item.chinese }}</span></view>
-                            <view><span class="npc-item-tab-div-cook-div-cook-middle-span-money">￥{{ item.money }}</span> - Lv {{ item.level }} </view>
+                            <view><span class="npc-item-tab-div-cook-div-cook-middle-span">{{ item.chinese }}</span> <span class="npc-item-tab-div-cook-div-cook-middle-span-money">￥{{ item.money }}</span> - Lv {{ item.level }}</view>
                             <view>{{ item.material }}</view>
+                            <view class="cook-div-cook-middle-tag">
+                                <view class="touhou-tag" v-for="tag in item.tag.split(',')" :key="tag">{{ tag.trim() }}<view v-if="cookFilter.has(tag.trim())" class="touhou-tag-select"></view></view>
+                            </view>
+                            <view class="cook-div-cook-middle-tag" v-if="!!item.withNo"><view class="touhou-notag-left" v-for="tag in item.withNo.split(',')" :key="tag">{{ tag.trim() }}</view></view>
                         </view>
                     </view>
                 </view>
@@ -88,14 +93,16 @@
                          <view v-if="drinksFilter.has(item.trim())" class="drink-tag-select"></view>
                     </view>
                 </view>
-                <view class="npc-item-tab-div-drinks-div">
-                    <view class="npc-item-tab-div-drinks-div-drink" v-for="item in npcDrinks" :key="item.name" @click="openItem(item)">
-                        <view class="npc-item-tab-div-drinks-div-drink-left">
+                <view class="npc-item-tab-div-recommend-cook npc-item-tab-div-drinks-div">
+                    <view class="npc-item-tab-div-cook-div-cook" v-for="item in npcDrinks" :key="item.name" @click="openItem(item)">
+                        <view class="npc-item-tab-div-cook-div-cook-left">
                             <image :src="'/static/img/drink/' + item.name + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
                         </view>
-                        <view class="npc-item-tab-div-drinks-div-drink-middle">
-                            <view><span class="npc-item-tab-div-drinks-div-drink-middle-span">{{ item.chinese }}</span></view>
-                            <view><span class="npc-item-tab-div-drinks-div-drink-middle-span-money">￥{{ item.money }}</span> - Lv {{ item.level }}</view>
+                        <view class="npc-item-tab-div-cook-div-cook-middle">
+                            <view><span class="npc-item-tab-div-cook-div-cook-middle-span">{{ item.chinese }}</span> <span class="npc-item-tab-div-cook-div-cook-middle-span-money">￥{{ item.money }}</span> - Lv {{ item.level }}</view>
+                            <view class="cook-div-cook-middle-tag">
+                                <view class="drink-tag" v-for="drink in item.tag.split(',')" :key="drink">{{ drink.trim() }}<view v-if="drinksFilter.has(drink.trim())" class="touhou-tag-select"></view></view>
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -281,6 +288,14 @@
             background-position: 0 0;
         }
 	}
+    .tag-animation {
+        background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+        background-size: 200%;
+        animation-name: masked-animation;
+        animation-duration: 2s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+    }
     .npc-item-tab-div-cook-div-cook-middle-material {
         background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
         color: transparent;
@@ -383,54 +398,9 @@
                 }
                 
                 .npc-item-tab-div-cook-div {
-                    width: 100%;
                     height: calc(100dvh - 340px);
                     // min-height: calc(100dvh - 370px);
                     // max-height: calc(100dvh - 370px);
-                    overflow: auto;
-                    border-radius: 10px;
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    align-content: flex-start;
-                    justify-content: space-between;
-                    align-items: stretch;
-                    
-                    .npc-item-tab-div-cook-div-cook {
-                        width: 45%;
-                        margin: 5px 2px;
-                        padding: 5px 5px;
-                        height: auto;
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        border-radius: 10px;
-                        background-color: #FBEFCB;
-                        
-                        .npc-item-tab-div-cook-div-cook-left {
-                            width: 50px;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: space-between;
-                        }
-                        
-                        .npc-item-tab-div-cook-div-cook-middle {
-                            margin-left: 8px;
-                            font-size: 14px;
-                            width: calc(100vw - 55px);
-                            display: flex;
-                            flex-direction: column;
-                            align-items: flex-start;
-                            justify-content: space-between;
-                            
-                            .npc-item-tab-div-cook-div-cook-middle-span {
-                                font-weight: bold;
-                            }
-                            .npc-item-tab-div-cook-div-cook-middle-span-money {
-                                font-weight: bold;
-                            }
-                        }
-                    }
                 }
                 
                 .npc-item-tab-div-drinks-tag {
@@ -444,51 +414,6 @@
                     height: calc(100dvh - 290px);
                     // min-height: calc(100dvh - 320px);
                     // max-height: calc(100dvh - 320px);
-                    overflow: auto;
-                    border-radius: 10px;
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    align-content: flex-start;
-                    justify-content: space-between;
-                    align-items: stretch;
-                    
-                    .npc-item-tab-div-drinks-div-drink {
-                        width: 45%;
-                        margin: 5px 2px;
-                        padding: 5px 5px;
-                        height: auto;
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        border-radius: 10px;
-                        background-color: #FBEFCB;
-                        
-                        .npc-item-tab-div-drinks-div-drink-left {
-                            width: 50px;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: space-between;
-                        }
-                        
-                        .npc-item-tab-div-drinks-div-drink-middle {
-                            margin-left: 8px;
-                            font-size: 14px;
-                            width: calc(100vw - 55px);
-                            display: flex;
-                            flex-direction: column;
-                            align-items: flex-start;
-                            justify-content: space-between;
-                            
-                            .npc-item-tab-div-drinks-div-drink-middle-span {
-                                font-weight: bold;
-                            }
-                            .npc-item-tab-div-drinks-div-drink-middle-span-money {
-                                font-weight: bold;
-                            }
-                            
-                        }
-                    }
                 }
                 
                 .npc-item-tab-div-reward-title {

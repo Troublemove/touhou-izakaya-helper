@@ -15,7 +15,7 @@
 					<view><span class="drinks-div-drink-middle-span">{{ item.chinese }}</span><span class="drinks-div-drink-middle-span-money"> ￥{{ item.money }}</span> - Lv {{ item.level }}</view>
 					<!-- <view></view> -->
                     <view class="drinks-div-drink-middle-tag">
-                        <view class="drink-tag" v-for="drink in item.tag.split(',')" :key="drink">{{ drink.trim() }}</view>
+                        <view class="drink-tag" v-for="drink in item.tag.split(',')" :key="drink">{{ drink.trim() }}<view v-if="drinksFilter.has(drink.trim())" class="drink-tag-select"></view></view>
                     </view>
 				</view>
 			</view>

@@ -10,20 +10,7 @@
 
 安装即用，软件会内置游戏数据，所以不需要导入配置文件，配置文件主要进行自定义修改。
 
-<center>
-    <img src=".\static\img\show\npc.jpg" alt="npc" style="zoom:25%;" width="700" />
-    <img src=".\static\img\show\npc_recomand.jpg" alt="npc_recomand" style="zoom:25%;" width="700" />
-    <img src=".\static\img\show\npc_cook.jpg" alt="npc_cook" style="zoom:25%;" width="700" />
-    <img src=".\static\img\show\npc_drink.jpg" alt="npc_drink" style="zoom:25%;" width="700" />
-    <img src=".\static\img\show\npc_card.jpg" alt="npc_card" style="zoom:25%;" width="700" />
-    <img src=".\static\img\show\npc_friend.jpg" alt="npc_friend" style="zoom:25%;" width="700" />
-    <img src=".\static\img\show\cook1.jpg" alt="cook1" style="zoom:25%;" width="700" />
-    <img src=".\static\img\show\cook2.jpg" alt="cook2" style="zoom:25%;" width="700" />
-    <img src=".\static\img\show\drink.jpg" alt="drink" style="zoom:25%;" width="700" />
-    <img src=".\static\img\show\setting.jpg" alt="setting" style="zoom:25%;" width="700" />
-</center>
-
-</center>
+![info](./info.png)
 
 # 软件设置
 

@@ -8,16 +8,7 @@
 		</view>
 		<view class="drinks-div">
 			<view class="drinks-div-drink" v-for="item in npcDrinks" :key="item.name">
-				<view class="drinks-div-drink-left">
-                    <image :src="'/static/img/drink/' + item.name + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
-				</view>
-				<view class="drinks-div-drink-middle">
-					<view><span class="drinks-div-drink-middle-span">{{ item.chinese }}</span><span class="drinks-div-drink-middle-span-money"> ￥{{ item.money }}</span> - Lv {{ item.level }}</view>
-					<!-- <view></view> -->
-                    <view class="drinks-div-drink-middle-tag">
-                        <view class="drink-tag" v-for="drink in item.tag.split(',')" :key="drink">{{ drink.trim() }}<view v-if="drinksFilter.has(drink.trim())" class="drink-tag-select"></view></view>
-                    </view>
-				</view>
+				<cook-bar :type="'drink'" :cookItem="item" :cookFilter="drinksFilter"></cook-bar>
 			</view>
 		</view>
     </view>
@@ -27,6 +18,7 @@
 <script setup>
     import { ref } from 'vue';
     import tabBar from '@/components/tab-bar/tabBar.vue'
+	import cookBar from '@/components/cookBar.vue'
     import { onShow } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
@@ -82,7 +74,7 @@
 		.drinks-div {
 			width: 98vw;
 			padding: 4px;
-            height: calc(100dvh - 230px);
+            height: calc(100vh - 240px);
             border-radius: 10px;
 			overflow: auto;
 			// display: flex;
@@ -95,43 +87,14 @@
 			.drinks-div-drink {
 				// width: 45%;
 				margin: 5px 2px;
-				padding: 5px 5px;
+				padding: 0px 5px;
 				height: auto;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				border-radius: 10px;
-				background-color: #FBEFCB;
-				
-				.drinks-div-drink-left {
-					width: 50px;
-					display: flex;
-					flex-direction: column;
-					justify-content: space-between;
-				}
-				
-				.drinks-div-drink-middle {
-					margin-left: 8px;
-					font-size: 14px;
-					width: calc(100vw - 55px);
-					display: flex;
-					flex-direction: column;
-					align-items: flex-start;
-					justify-content: space-between;
-					
-					.drinks-div-drink-middle-span {
-						font-weight: bold;
-                        font-size: 16px;
-					}
-					.drinks-div-drink-middle-span-money {
-						font-weight: bold;
-					}
-					
-                    .drinks-div-drink-middle-tag {
-                        display: flex;
-                        flex-wrap: wrap;
-                    }
-				}
+				background-color: #d4aa76;
+				border: 2px solid rgb(165, 115, 66);
 			}
 		}
     }

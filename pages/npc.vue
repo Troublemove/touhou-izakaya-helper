@@ -35,7 +35,6 @@
     import { initCache } from '@/static/js/common.js'
 
     onShow(() => {
-        initCache()
 		if (!!locations) {
 			locations.value = uni.getStorageSync('locationData')
 		}
@@ -58,6 +57,7 @@
     // 上层组件方法
     const emits = defineEmits(["openItem"]);
 
+    initCache()
     const locations = ref(uni.getStorageSync('locationData'))
     const npcs = ref(uni.getStorageSync('npcData'))
     const selectAll = ref(true)
@@ -125,7 +125,7 @@
 
             .npc-area-img {
                 // height: calc(100vh - 125px);
-                min-height: calc(100dvh - 140px);
+                min-height: calc(100vh - 140px);
                 overflow: auto;
                 display: grid;
                 justify-content: space-evenly;

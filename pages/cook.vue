@@ -42,16 +42,7 @@
         </view>
         <view class="cook-div">
             <view class="cook-div-cook" v-for="item in cooks" :key="item.chinese">
-                <view class="cook-div-cook-left">
-                    <image :src="'/static/img/cook/' + item.name + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill"/>
-                    <image :src="'/static/img/common/' + item.cooker + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill"/>
-                </view>
-                <view class="cook-div-cook-middle">
-                    <view><span class="cook-div-cook-middle-span">{{ item.chinese }}</span><span class="cook-div-cook-middle-span-money"> ￥{{ item.money }}</span> - Lv {{ item.level }}</view>
-                    <view><span class="cook-div-cook-middle-span-money">{{ item.material }}</span></view>
-                    <view class="cook-div-cook-middle-tag"><view class="touhou-tag" v-for="item in item.tag.split(',')" :key="item">{{ item.trim() }}<view v-if="cookFilter.has(item.trim())" class="touhou-tag-select"></view></view></view>
-                    <view class="cook-div-cook-middle-tag" v-if="!!item.withNo"><view class="touhou-notag-left" v-for="item in item.withNo.split(',')" :key="item">{{ item.trim() }}</view></view>
-                </view>
+				<cook-bar :type="'cook'" :cookItem="item" :cookFilter="cookFilter"></cook-bar>
             </view>
         </view>
         
@@ -68,14 +59,14 @@
                         <view class="matrial-tag">
                             <view class="drink-tag" v-for="item in materialTags" :key="item" @click="selectMaterialTag(item)">{{ item }}<view v-if="materialTagsFilter.has(item)" class="drink-tag-select"></view></view>
                         </view>
-                        <view class="matrial-div">
+                        <view class="matrial-div-div">
                             <view class="material-item" v-for="item in chooseItem.value" :key="item" @click="chooseTagFilter(chooseItem.type, item.chinese)">
                                 <view class="material-item-left">
                                     <image :src="'/static/img/material/' + item.name + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill"/>
                                 </view>
                                 <view class="material-item-middle">
                                     <view>{{ item.chinese }} ￥{{ item.money }} - Lv {{ item.level }}</view>
-                                    <view class="material-item-middle-tag">
+                                    <view class="material-item-middle-tag" v-if="!!item.tag">
                                         <view class="drink-tag" v-for="tag in item.tag.split(',')" :key="tag">{{ tag }}<view v-if="materialTagsFilter.has(tag)" class="drink-tag-select"></view></view>
                                     </view>
                                 </view>
@@ -93,6 +84,7 @@
 <script setup>
     import { ref } from 'vue';
     import tabBar from '@/components/tab-bar/tabBar.vue'
+	import cookBar from '@/components/cookBar.vue'
     import { onShow } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
@@ -333,9 +325,10 @@
         
         .cook-div {
             margin: 5px;
-            height: calc(100dvh - 230px);
-            // max-height: calc(100dvh - 198px);
-            // min-height: calc(100dvh - 198px);
+			// height: 600px;
+            height: calc(100vh - 232px);
+            // max-height: calc(100vh - 230px);
+            // min-height: calc(100vh - 230px);
             overflow: auto;
             display: flex;
             align-items: center;
@@ -345,6 +338,7 @@
             
             .cook-div-cook {
                 width: 94dvw;
+                width: 94%;
                 margin: 5px 2px;
                 padding: 5px 5px;
                 height: auto;
@@ -352,37 +346,12 @@
                 align-items: center;
                 justify-content: space-between;
                 border-radius: 10px;
-                background-color: #FBEFCB;
-                
-                .cook-div-cook-left {
-                    width: 50px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                }
-                
-                .cook-div-cook-middle {
-                    margin-left: 8px;
-                    font-size: 14px;
-                    width: calc(100vw - 55px);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
-                    justify-content: space-between;
-                    
-                    .cook-div-cook-middle-span {
-                        font-weight: bold;
-                        font-size: 16px;
-                    }
-                    .cook-div-cook-middle-span-money {
-                        font-weight: bold;
-                    }
-                    
-                    .cook-div-cook-middle-tag {
-                        display: flex;
-                        flex-wrap: wrap;
-                    }
-                }
+                background-color: #d4aa76;
+				border: 2px solid rgb(165, 115, 66);
+				// box-shadow: inset 0px -6px 10px 0px rgb(128, 99, 73);
+				// background-image: url('/static/img/common/cookPad.png');
+				// background-size: 100% 100%;
+				// background-repeat: no-repeat;
             }
         }
         .cook-div::-webkit-scrollbar {
@@ -404,7 +373,7 @@
                 }
                 
                 .material-div {
-                    height: 75dvh;
+                    height: 75vh;
                     overflow: auto;
                     
                     .matrial-tag {
@@ -418,9 +387,9 @@
                             margin: 2px;
                         }
                     }
-                    .matrial-div {
+                    .matrial-div-div {
                         margin-top: 10px;
-                        max-height: calc(75dvh - 200px);
+                        max-height: calc(75vh - 200px);
                         overflow: auto;
                         
                         .material-item {
@@ -463,10 +432,10 @@
                             }
                         }
                     }
-                }
-                
-                .material-div::-webkit-scrollbar {
-                    display: none;
+					
+					.matrial-div-div::-webkit-scrollbar {
+						display: none;
+					}
                 }
             }
         }

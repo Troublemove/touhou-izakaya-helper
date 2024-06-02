@@ -99,26 +99,27 @@
 		border-left-color: transparent;
 		transform: rotate(45deg);
 	}
-    /* .touhou-notag-left-select::before, .touhou-notag-left-select::after {
+    .touhou-tag-left-noselect::before, .touhou-tag-left-noselect::after {
         content: '';
         width: 0px;
-        height: 18px;
+        height: 15px;
         position: absolute;
-        right: 5px;
-        bottom: 0px;
-        border: 2px solid #E40D0D;
+        right: 10px;
+        bottom: 3px;
+        border: 1px solid #000000;
+		background-color: #e40d0d;
     }
-    .touhou-notag-left-select::before {
+    .touhou-tag-left-noselect::before {
         transform: rotate(45deg);
     }
-    .touhou-notag-left-select::after {
+    .touhou-tag-left-noselect::after {
         transform: rotate(-45deg);
-    } */
+    }
 	
     .drink-tag {
         display: flex;
         align-items: center;
-        margin: 3px 2px;
+        margin: 2px 2px;
         padding: 2px 8px;
         color: #A45C22;
         background-color: inherit;

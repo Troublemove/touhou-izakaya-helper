@@ -8,6 +8,7 @@
     </view>
     <uv-loading-page :loading="loading" loading-text="读取中..." font-size="20px" loading-mode="semicircle" bgColor="#8D6549"></uv-loading-page>
     <uv-modal ref="clearCacheModal" content='该操作会将所有数据重置!' :showCancelButton='true' @confirm="clearCache()"></uv-modal>
+    <uv-modal ref="confirmModal" :content='confirmText'></uv-modal>
     <tab-bar :selected="3"></tab-bar>
 </template>
 
@@ -29,9 +30,15 @@
 		'drink': 'drinksData',
 		'cook': 'cookData',
 		'matrial': 'materialData',
-		'drinkTag': 'drinkTagData',
+		'drinksTag': 'drinkTagData',
 		'cookTag': 'cookTagData',
 	})
+	
+	const getVersion = () => {
+		let version = !!uni.getAppBaseInfo().appWgtVersion ? uni.getAppBaseInfo().appWgtVersion : uni.getAppBaseInfo().appVersion
+		notice.value = '版本：' + version + '，该软件永久免费使用！'
+	}
+	getVersion()
 
     const loading = ref(false)
     const toast = ref('')
@@ -47,6 +54,8 @@
     }
 
     const clearCacheModal = ref('')
+	const confirmText = ref('')
+    const confirmModal = ref('')
     // 清理缓存，并重新加载
     const clearCache = () => {
 		uni.clearStorageSync()
@@ -54,7 +63,7 @@
         showToast({
             type: 'success',
             message: "缓存重置成功!",
-            duration: 1000
+            duration: 500
         })
     }
     
@@ -65,6 +74,41 @@
         }, 1000)
     }
 
+	const compareAB = (a, b) => {
+		let a0 = a[0]
+		let b0 = b[0]
+		if ('string' === typeof b0) {
+			// 地区、料理tag、饮料tag
+			return false
+		} else{
+			for (key in a0) {
+				let vala = a0[key]
+				if ('[object Undefined]' === Object.prototype.toString.call(b0[key])) {
+					return true
+				}
+				if ('[object string]' !== Object.prototype.toString.call(vala)) {
+					if ('[object Array]' === Object.prototype.toString.call(vala)) {
+						let valKeya = vala[0]
+						for (valKeyKey in valKeya) {
+							let valKeya0 = valKeya[valKeyKey]
+							console.log('777 ', valKeyKey, b0[key][0][valKeyKey]);
+							if ('[object Undefined]' === Object.prototype.toString.call(b0[key][0][valKeyKey])) {
+								return true
+							}
+						}
+					} else if ('[object Object]' === Object.prototype.toString.call(vala)) {
+						for (valKey in vala) {
+							let valKeya = vala[valKey]
+							if ('[object Undefined]' === Object.prototype.toString.call(b0[key][valKey])) {
+								return true
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
     const readFile = (fileName) => {
         loading.value = true
         const File = plus.android.importClass('java.io.File');
@@ -92,35 +136,40 @@
             }
             console.log('fileContent', list);
             let json = ''
-            if ('location' === fileDataName || 'drinkTag' === fileDataName || 'cookTag' === fileDataName) {
-                
+            if ('location' === fileDataName || 'drinksTag' === fileDataName || 'cookTag' === fileDataName) {
+                json = list.replace(/，/g, ",").replace(/ /g, "").split(',')
             } else {
                 json = JSON.parse(list)
-                if ('npcRecommend' !== fileDataName) {
-                	uni.setStorageSync(fileData[fileDataName], json)
-                } else {
-                	// 处理文件内容
-                    let jsonMap = ref([])
-                    json.forEach(item => {
-                        jsonMap.value[item.chinese] = item
-                    })
-                    let npcDatas = uni.getStorageSync(fileData[fileDataName])
-                    npcDatas.forEach(item => {
-                        if (jsonMap.value.hasOwnProperty(item.chinese)) {
-                            for (keys in jsonMap.value[item.chinese]) {
-                                item[keys] = jsonMap.value[item.chinese][keys]
-                            }
-                        }
-                    })
-                    uni.setStorageSync(fileData[fileDataName], npcDatas)
-                }
             }
-			
-            showToast({
-                type: 'success',
-                message: "文件导入成功!",
-                duration: 1000
-            })
+			if ('npcRecommend' !== fileDataName && compareAB(uni.getStorageSync(fileData[fileDataName]), json)) {
+				confirmText.value = '当前版本APP中，'+ fileDataName +' 文件结构已更改，请使用最新文件进行导入操作！'
+				confirmModal.value.open()
+			} else {
+				if ('npcRecommend' !== fileDataName) {
+					uni.setStorageSync(fileData[fileDataName], json)
+				} else {
+					// 处理文件内容
+					let jsonMap = ref([])
+					json.forEach(item => {
+						jsonMap.value[item.chinese] = item
+					})
+					let npcDatas = uni.getStorageSync(fileData[fileDataName])
+					npcDatas.forEach(item => {
+						if (jsonMap.value.hasOwnProperty(item.chinese)) {
+							for (keys in jsonMap.value[item.chinese]) {
+								item[keys] = jsonMap.value[item.chinese][keys]
+							}
+						}
+					})
+					uni.setStorageSync(fileData[fileDataName], npcDatas)
+				}
+				
+				showToast({
+					type: 'success',
+					message: "文件导入成功!",
+					duration: 500
+				})
+			}
         } catch (e) {
             console.log(e);
             showToast({
@@ -141,7 +190,7 @@
             inputStreamReader.close();
         }
     }
-
+	
     // 打开手机文件管理器选择文件
     const chooseFile = () => {
         var CODE_REQUEST = 1000;
@@ -304,7 +353,7 @@
 
 <style lang="scss" scoped>
 	.setting {
-		height: calc(100dvh - 120px);
+		height: calc(100vh - 120px);
 	    background-color: #8D6549;
 		padding: 10px;
 		

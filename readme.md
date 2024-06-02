@@ -10,6 +10,21 @@
 
 安装即用，软件会内置游戏数据，所以不需要导入配置文件，配置文件主要进行自定义修改。
 
+<center>
+    <img src=".\static\img\show\npc.jpg" alt="npc" style="zoom:25%;" width="700" />
+    <img src=".\static\img\show\npc_recomand.jpg" alt="npc_recomand" style="zoom:25%;" width="700" />
+    <img src=".\static\img\show\npc_cook.jpg" alt="npc_cook" style="zoom:25%;" width="700" />
+    <img src=".\static\img\show\npc_drink.jpg" alt="npc_drink" style="zoom:25%;" width="700" />
+    <img src=".\static\img\show\npc_card.jpg" alt="npc_card" style="zoom:25%;" width="700" />
+    <img src=".\static\img\show\npc_friend.jpg" alt="npc_friend" style="zoom:25%;" width="700" />
+    <img src=".\static\img\show\cook1.jpg" alt="cook1" style="zoom:25%;" width="700" />
+    <img src=".\static\img\show\cook2.jpg" alt="cook2" style="zoom:25%;" width="700" />
+    <img src=".\static\img\show\drink.jpg" alt="drink" style="zoom:25%;" width="700" />
+    <img src=".\static\img\show\setting.jpg" alt="setting" style="zoom:25%;" width="700" />
+</center>
+
+</center>
+
 # 软件设置
 
 1.   **重置缓存**
@@ -166,7 +181,7 @@
 
           ```
           昂贵, 实惠, 大份, 肉, 水产, 素, 家常, 高级, 传说, 重油, 清淡, 下酒, 饱腹, 山珍, 海味, 和风, 西式, 中华, 咸, 鲜, 甜, 生, 招牌, 适合拍照, 凉爽, 灼热, 力量涌现, 猎奇, 文化底蕴, 菌类, 不可思议, 小巧, 梦幻, 特产, 酸, 果味, 汤羹, 烧烤, 辣, 燃起来了
-		  ```
+		```
      
      5.   `drinks_xxxx.txt`
      

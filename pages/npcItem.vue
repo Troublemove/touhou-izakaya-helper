@@ -8,12 +8,12 @@
             <view class="tag-div">
                 <view style="margin: 0px;font-weight: bold;font-size: 20px;">{{ npc.chinese }}</view>
                 <view>持有: {{ npc.money }} 円</view>
-                <view>出没地区: {{ npc.location }}</view>
+                <view class="tag-div-location">出没地区: {{ npc.location }}</view>
             </view>
         </view>
         <view class="npc-item-tab" :style="{ height: swiperHeight - 150 + 'px' }">
             <uv-tabs :list="tabList" :current="tabName" @click="clickTab" :scrollable="false"></uv-tabs>
-            <swiper :current="tabName" :autoplay="false" @change="e => {tabName = e.detail.current}" :style="{ height: swiperHeight - 200 + 'px' }">
+            <swiper circular :current="tabName" :autoplay="false" @change="e => {tabName = e.detail.current}" :style="{ height: swiperHeight - 200 + 'px' }">
                 <swiper-item>
                     <view class="npc-item-tab-div tab-css" :style="{ height: swiperHeight - 200 + 'px' }">
                         <view class="npc-item-tab-div-recommend-cook" v-if="!!npc.recommendCooks">
@@ -125,17 +125,20 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { ref, nextTick } from 'vue';
 	import cookBar from '@/components/cookBar.vue'
-    import { onLoad } from '@dcloudio/uni-app'
     
     const back = () => {
         uni.navigateBack()
     }
     const swiperHeight = ref('')
-    onLoad(() => {
-        swiperHeight.value = uni.getSystemInfoSync().windowHeight;
-    })
+	nextTick(() => {
+        swiperHeight.value = uni.getSystemInfoSync().windowHeight
+		setTimeout(() => {
+			filterDrinks('')
+			filterCooks('', '')
+		}, 100)
+	})
     
     const tabList = ref([
         {name: '推荐'},
@@ -178,7 +181,6 @@
             return filter.length === 0
         })
     }
-    filterDrinks('')
     
     const cookList = ref(uni.getStorageSync('cookData'))
     const cooks = ref([])
@@ -227,8 +229,6 @@
             return tagfilter.length === 0 && tagNoResult.size === 0
         })
     }
-    filterCooks('', '')
-    
 </script>
 
 <style lang="scss" scoped>
@@ -250,6 +250,14 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+				
+				.tag-div-location {
+					max-height: 70px;
+					overflow: auto;
+				}
+				.tag-div-location::-webkit-scrollbar {
+				  display: none;
+				}
             }
         }
         

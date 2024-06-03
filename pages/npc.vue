@@ -1,5 +1,5 @@
 <template>
-    <view class="npc">
+    <view class="npc" :style="{ height: screenHeight - 44 + 'px' }">
         <view class="tag-filter">
             <view class="touhou-tag" @click="selectLocation('全部')">
                 全部
@@ -13,7 +13,7 @@
             </uv-scroll-list>
         </view>
         <view class="npc-area">
-            <view class="npc-area-img">
+            <view class="npc-area-img" :style="{ height: screenHeight - 95 + 'px' }">
                 <view class="npc-img" v-for="(item, index) in npc" :key="item.name" @click="openNpcItem(item)">
                     <img :src="'static/img/npc/' + item.name + '.png'" style="width: 76px; height: 100px;" mode="scaleToFill" @error="imageError(index)" />
                 </view>
@@ -28,17 +28,16 @@
 </template>
 
 <script setup>
-    import { ref } from "vue";
+    import { ref, nextTick } from "vue";
     import tabBar from '@/components/tab-bar/tabBar.vue'
     import { onPageScroll } from '@dcloudio/uni-app'
-    import { onShow, onLoad } from '@dcloudio/uni-app'
+    import { onShow } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
-    const screenHeight = ref('')
-    onLoad(() => {
-        screenHeight.value = uni.getSystemInfoSync().windowHeight;
-        console.log('----', screenHeight.value);
-    })
+	const screenHeight = ref('')
+	nextTick(() => {
+	    screenHeight.value = uni.getSystemInfoSync().windowHeight
+	})
     onShow(() => {
 		if (!!locations) {
 			locations.value = uni.getStorageSync('locationData')
@@ -125,21 +124,18 @@
         background-color: #8D6549;
         
         .tag-filter {
-            left: 0;
-            right: 0;
-            top: 0;
-            background-color: #8d6549;
-            position: fixed;
+            // left: 0;
+            // right: 0;
+            // top: 0;
+            // background-color: #8d6549;
+            // position: fixed;
         }
 
         .npc-area {
-            margin-top: 30px;
-            padding: 10px 5px;
+            padding: 2px 5px;
             background-color: #8D6549;
 
             .npc-area-img {
-                // height: calc(100vh - 125px);
-                min-height: calc(100vh - 140px);
                 overflow: auto;
                 display: grid;
                 justify-content: space-evenly;
@@ -147,15 +143,12 @@
                 grid-template-columns: repeat(auto-fill, 80px);
                 grid-template-rows: repeat(auto-fill, 110px);
                 border-radius: 15px;
-                // background-color: #8D6549;
                 box-shadow: inset 0px 0px 10px 1px #000000;
 
                 .npc-img {
                     width: 76px;
-                    // width: calc((100% - 50px) / 4);
                     height: 100px;
                     margin: 10px 10px;
-                    // background-color: #8D6549;
                 }
             }
         }
@@ -167,4 +160,7 @@
             display: none;
         }
     }
+	:deep(.uv-tabbar__placeholder) {
+		display: none;
+	}
 </style>

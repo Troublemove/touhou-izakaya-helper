@@ -40,7 +40,7 @@
                 {{cooks.length}}
             </view>
         </view>
-        <view class="cook-div" :style="{ height: cookHeight - 205 + 'px' }">
+        <view class="cook-div" :style="{ height: cookHeight - 235 + 'px' }">
             <view class="cook-div-cook" v-for="item in cooks" :key="item.chinese">
 				<cook-bar :type="'cook'" :cookItem="item" :cookFilter="cookFilter"></cook-bar>
             </view>
@@ -82,17 +82,16 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { nextTick, ref } from 'vue';
     import tabBar from '@/components/tab-bar/tabBar.vue'
 	import cookBar from '@/components/cookBar.vue'
-    import { onShow, onLoad } from '@dcloudio/uni-app'
+    import { onShow } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
     const cookHeight = ref('')
-    onLoad(() => {
-        cookHeight.value = uni.getSystemInfoSync().windowHeight;
-        console.log('cookHeight', cookHeight.value);
-    })
+	nextTick(() => {
+		cookHeight.value = uni.getSystemInfoSync().windowHeight
+	})
     onShow(() => {
 		if (!!cookList) {
 			cookList.value = uni.getStorageSync('cookData')
@@ -338,7 +337,6 @@
             // box-shadow: inset 0px 0px 10px 1px #000000;
             
             .cook-div-cook {
-                width: 94dvw;
                 width: 94%;
                 margin: 5px 2px;
                 padding: 5px 5px;

@@ -15,7 +15,6 @@
 <style lang="scss">
 	/*每个页面公共css */
 	uni-page-body, html, body, page {
-        height: 100%;
 		background-color: #8D6549;
 	}
 	

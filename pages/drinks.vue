@@ -6,7 +6,7 @@
 				 <view v-if="drinksFilter.has(item)" class="drink-tag-select"></view>
 			</view>
 		</view>
-		<view class="drinks-div">
+		<view class="drinks-div" :style="{ height: drinkHeight - 210 + 'px' }">
 			<view class="drinks-div-drink" v-for="item in npcDrinks" :key="item.name">
 				<cook-bar :type="'drink'" :cookItem="item" :cookFilter="drinksFilter"></cook-bar>
 			</view>
@@ -19,9 +19,14 @@
     import { ref } from 'vue';
     import tabBar from '@/components/tab-bar/tabBar.vue'
 	import cookBar from '@/components/cookBar.vue'
-    import { onShow } from '@dcloudio/uni-app'
+    import { onShow, onLoad } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
+    const drinkHeight = ref('')
+    onLoad(() => {
+        drinkHeight.value = uni.getSystemInfoSync().windowHeight;
+        console.log('drinkHeight', drinkHeight.value);
+    })
     onShow(() => {
 		if (!!drinksTags) {
 			drinksTags.value = uni.getStorageSync('drinkTagData')
@@ -74,7 +79,6 @@
 		.drinks-div {
 			width: 98vw;
 			padding: 4px;
-            height: calc(100vh - 240px);
             border-radius: 10px;
 			overflow: auto;
 			// display: flex;

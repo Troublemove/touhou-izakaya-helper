@@ -91,7 +91,6 @@
 						let valKeya = vala[0]
 						for (valKeyKey in valKeya) {
 							let valKeya0 = valKeya[valKeyKey]
-							console.log('777 ', valKeyKey, b0[key][0][valKeyKey]);
 							if ('[object Undefined]' === Object.prototype.toString.call(b0[key][0][valKeyKey])) {
 								return true
 							}

@@ -40,7 +40,7 @@
                 {{cooks.length}}
             </view>
         </view>
-        <view class="cook-div">
+        <view class="cook-div" :style="{ height: cookHeight - 205 + 'px' }">
             <view class="cook-div-cook" v-for="item in cooks" :key="item.chinese">
 				<cook-bar :type="'cook'" :cookItem="item" :cookFilter="cookFilter"></cook-bar>
             </view>
@@ -67,7 +67,7 @@
                                 <view class="material-item-middle">
                                     <view>{{ item.chinese }} ￥{{ item.money }} - Lv {{ item.level }}</view>
                                     <view class="material-item-middle-tag" v-if="!!item.tag">
-                                        <view class="drink-tag" v-for="tag in item.tag.split(',')" :key="tag">{{ tag }}<view v-if="materialTagsFilter.has(tag)" class="drink-tag-select"></view></view>
+                                        <view class="drink-tag" v-for="tag in item.tag.split(',')" :key="tag">{{ tag.trim() }}<view v-if="materialTagsFilter.has(tag.trim())" class="drink-tag-select"></view></view>
                                     </view>
                                 </view>
                                 <view class="material-item-right" v-show="materialsFilter.has(item.chinese)"></view>
@@ -85,9 +85,14 @@
     import { ref } from 'vue';
     import tabBar from '@/components/tab-bar/tabBar.vue'
 	import cookBar from '@/components/cookBar.vue'
-    import { onShow } from '@dcloudio/uni-app'
+    import { onShow, onLoad } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
+    const cookHeight = ref('')
+    onLoad(() => {
+        cookHeight.value = uni.getSystemInfoSync().windowHeight;
+        console.log('cookHeight', cookHeight.value);
+    })
     onShow(() => {
 		if (!!cookList) {
 			cookList.value = uni.getStorageSync('cookData')
@@ -325,10 +330,6 @@
         
         .cook-div {
             margin: 5px;
-			// height: 600px;
-            height: calc(100vh - 232px);
-            // max-height: calc(100vh - 230px);
-            // min-height: calc(100vh - 230px);
             overflow: auto;
             display: flex;
             align-items: center;

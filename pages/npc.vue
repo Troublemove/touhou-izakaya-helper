@@ -31,9 +31,14 @@
     import { ref } from "vue";
     import tabBar from '@/components/tab-bar/tabBar.vue'
     import { onPageScroll } from '@dcloudio/uni-app'
-    import { onShow } from '@dcloudio/uni-app'
+    import { onShow, onLoad } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
+    const screenHeight = ref('')
+    onLoad(() => {
+        screenHeight.value = uni.getSystemInfoSync().windowHeight;
+        console.log('----', screenHeight.value);
+    })
     onShow(() => {
 		if (!!locations) {
 			locations.value = uni.getStorageSync('locationData')
@@ -118,8 +123,17 @@
 <style lang="scss" scoped>
     .npc {
         background-color: #8D6549;
+        
+        .tag-filter {
+            left: 0;
+            right: 0;
+            top: 0;
+            background-color: #8d6549;
+            position: fixed;
+        }
 
         .npc-area {
+            margin-top: 30px;
             padding: 10px 5px;
             background-color: #8D6549;
 

@@ -2,7 +2,7 @@
     <page-meta>
         <navigation-bar :title="npc.chinese" background-color="#8D6549" />
     </page-meta>
-    <view class="npc-item">
+    <view class="npc-item" :style="{ height: swiperHeight + 'px' }">
         <view class="npc-item-info" @click="back">
             <image :src="'/static/img/npc/' + npc.name + '.png'" style="width: 100px; height: 130px;margin-right: 10px;" mode="scaleToFill"/>
             <view class="tag-div">
@@ -11,103 +11,115 @@
                 <view>出没地区: {{ npc.location }}</view>
             </view>
         </view>
-        <view class="npc-item-tab">
-            <uv-tabs :list="tabList" @click="clickTab" :scrollable="false"></uv-tabs>
-            <view class="npc-item-tab-div tab-css" v-if="tabName === tabList[0].name">
-                <view class="npc-item-tab-div-recommend-cook" v-if="!!npc.recommendCooks">
-                    <view class="npc-item-tab-div-cook-div-cook" v-for="item in npc.recommendCooks.split(',')" :key="item">
-						<cook-bar :type="'cook'" :isRecommand="true" :recommandCook="item.trim().split('*')[1]" :cookItem="cookMap[item.trim().split('*')[0]]" :cookFilter="npc.tag" :cookNoFilter="npc.noTag"></cook-bar>
-                    </view>
-                </view>
-                <view class="npc-item-tab-div-recommend-cook" v-if="!npc.recommendCooks">
-                    <view class="npc-item-tab-div-cook-div-cook" style="height: 50px;display: flex;justify-content: center;">
-                        无推荐!
-                    </view>
-                </view>
-                <view class="npc-item-tab-div-recommend-cook" v-if="!!npc.recommendDrinks">
-                    <view class="npc-item-tab-div-cook-div-cook" v-for="item in npc.recommendDrinks.split(',')" :key="item">
-						<cook-bar :type="'drink'" :isRecommand="true" :cookItem="drinksMap[item.trim().split('*')[0]]" :cookFilter="npc.drinks"></cook-bar>
-                    </view>
-                </view>
-                <view class="npc-item-tab-div-recommend-cook" v-if="!npc.recommendDrinks">
-                    <view class="npc-item-tab-div-cook-div-cook" style="height: 50px;display: flex;justify-content: center;">
-                        无推荐!
-                    </view>
-                </view>
-            </view>
-            <view class="npc-item-tab-div tab-css" v-if="tabName === tabList[1].name">
-                <view class="npc-item-tab-div-cook-tag" style="height: 68px;">
-                    <view class="touhou-tag" v-for="item in npc.tag.split(',')" :key="item" @click="filterCooks('tag', item.trim())">
-                         • {{ item.trim() }}
-                        <view v-if="cookFilter.has(item.trim())" class="touhou-tag-select"></view>
-                    </view>
-                </view>
-                <view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-if="!!npc.noTag">
-                    <view class="touhou-notag-left" v-for="item in npc.noTag.split(',')" :key="item" @click="filterCooks('noTag', item.trim())">
-                        {{ item.trim() }}
-                        <view v-if="cookNoTagFilter.has(item.trim())" class="touhou-notag-left-select"></view>
-                    </view>
-                </view>
-                <view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-else></view>
-                <view class="npc-item-tab-div-recommend-cook npc-item-tab-div-cook-div">
-                    <view class="npc-item-tab-div-cook-div-cook" v-for="item in cooks" :key="item.name">
-						<cook-bar :type="'cook'" :isRecommand="false" :cookItem="item" :cookFilter="cookFilter" :cookNoFilter="npc.noTag"></cook-bar>
-                    </view>
-                </view>
-            </view>
-            <view class="npc-item-tab-div tab-css" v-if="tabName === tabList[2].name">
-                <view class="npc-item-tab-div-drinks-tag">
-                    <view class="drink-tag" v-for="item in npc.drinks.split(',')" :key="item" @click="filterDrinks(item.trim())">
-                         • {{ item.trim() }}
-                         <view v-if="drinksFilter.has(item.trim())" class="drink-tag-select"></view>
-                    </view>
-                </view>
-                <view class="npc-item-tab-div-recommend-cook npc-item-tab-div-drinks-div">
-                    <view class="npc-item-tab-div-cook-div-cook" v-for="item in npcDrinks" :key="item.name">
-						<cook-bar :type="'drink'" :isRecommand="false" :cookItem="item" :cookFilter="drinksFilter"></cook-bar>
-                    </view>
-                </view>
-            </view>
-            <view class="npc-item-tab-div tab-css" v-else-if="tabName === tabList[3].name">
-                <view v-if="!!npc.rewardCard?.effect">
-                    <view class="npc-item-tab-div-reward-title">
-                        <view>{{ npc.rewardCard.name }}</view>
-                    </view>
-                    <view class="npc-item-tab-div-reward-div">
-                        <text>{{ npc.rewardCard.effect }}</text>
-                    </view>
-                    <view class="npc-item-tab-div-punish-title">
-                        <view>{{ npc.punishCard.name }}</view>
-                    </view>
-                    <view class="npc-item-tab-div-punish-div">
-                        <text>{{ npc.punishCard.effect }}</text>
-                    </view>
-                </view>
-                <view class="npc-item-tab-div-friend" v-else>
-                    <view><uv-empty text="无符卡！" textColor="#000" textSize="20px" icon="/static/img/common/no-card.png"></uv-empty></view>
-                </view>
-            </view>
-            <view class="npc-item-tab-div tab-css" v-if="tabName === tabList[4].name">
-                <view class="npc-item-tab-div-friend" v-if="npc?.friendship.length > 0">
-                    <view class="npc-item-tab-div-friend-item" v-for="item in npc.friendship" :key="item.name">
-                        <view class="npc-item-tab-div-friend-item-view">
-                            <view class="left">羁绊提升：</view>
-                            <view class="right"><uv-rate activeIcon="heart-fill" v-model="item.name" inactiveIcon="heart" readonly=""></uv-rate></view>
+        <view class="npc-item-tab" :style="{ height: swiperHeight - 150 + 'px' }">
+            <uv-tabs :list="tabList" :current="tabName" @click="clickTab" :scrollable="false"></uv-tabs>
+            <swiper :current="tabName" :autoplay="false" @change="e => {tabName = e.detail.current}" :style="{ height: swiperHeight - 200 + 'px' }">
+                <swiper-item>
+                    <view class="npc-item-tab-div tab-css" :style="{ height: swiperHeight - 200 + 'px' }">
+                        <view class="npc-item-tab-div-recommend-cook" v-if="!!npc.recommendCooks">
+                            <view class="npc-item-tab-div-cook-div-cook" v-for="item in npc.recommendCooks.split(',')" :key="item">
+                    			<cook-bar :type="'cook'" :isRecommand="true" :recommandCook="item.trim().split('*')[1]" :cookItem="cookMap[item.trim().split('*')[0]]" :cookFilter="npc.tag" :cookNoFilter="npc.noTag"></cook-bar>
+                            </view>
                         </view>
-                        <view class="npc-item-tab-div-friend-item-view">
-                            <view class="left">前置任务：</view>
-                            <view class="right"><text>{{ !!item.condition ? item.condition : '无' }}</text></view>
+                        <view class="npc-item-tab-div-recommend-cook" v-if="!npc.recommendCooks">
+                            <view class="npc-item-tab-div-cook-div-cook" style="height: 50px;display: flex;justify-content: center;">
+                                无推荐!
+                            </view>
                         </view>
-                        <view class="npc-item-tab-div-friend-item-view">
-                            <view class="left">{{ item.name === '5' ? '最终奖励：' : '升级任务：'}}</view>
-                            <view class="right">{{ item.task }}</view>
+                        <view class="npc-item-tab-div-recommend-cook" v-if="!!npc.recommendDrinks">
+                            <view class="npc-item-tab-div-cook-div-cook" v-for="item in npc.recommendDrinks.split(',')" :key="item">
+                    			<cook-bar :type="'drink'" :isRecommand="true" :cookItem="drinksMap[item.trim().split('*')[0]]" :cookFilter="npc.drinks"></cook-bar>
+                            </view>
+                        </view>
+                        <view class="npc-item-tab-div-recommend-cook" v-if="!npc.recommendDrinks">
+                            <view class="npc-item-tab-div-cook-div-cook" style="height: 50px;display: flex;justify-content: center;">
+                                无推荐!
+                            </view>
                         </view>
                     </view>
-                </view>
-                <view class="npc-item-tab-div-friend" v-else>
-                    <view><uv-empty text="无羁绊！" textColor="#000" textSize="20px" icon="/static/img/common/no-friend.png" iconSize="220"></uv-empty></view>
-                </view>
-            </view>
+                </swiper-item>
+                <swiper-item>
+                    <view class="npc-item-tab-div" :style="{ height: swiperHeight - 200 + 'px' }">
+                        <view class="npc-item-tab-div-cook-tag" style="height: 68px;">
+                            <view class="touhou-tag" v-for="item in npc.tag.split(',')" :key="item" @click="filterCooks('tag', item.trim())">
+                                 • {{ item.trim() }}
+                                <view v-if="cookFilter.has(item.trim())" class="touhou-tag-select"></view>
+                            </view>
+                        </view>
+                        <view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-if="!!npc.noTag">
+                            <view class="touhou-notag-left" v-for="item in npc.noTag.split(',')" :key="item" @click="filterCooks('noTag', item.trim())">
+                                {{ item.trim() }}
+                                <view v-if="cookNoTagFilter.has(item.trim())" class="touhou-notag-left-select"></view>
+                            </view>
+                        </view>
+                        <view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-else></view>
+                        <view class="npc-item-tab-div-recommend-cook" :style="{ height: swiperHeight - 335 + 'px' }">
+                            <view class="npc-item-tab-div-cook-div-cook" v-for="item in cooks" :key="item.name">
+                    			<cook-bar :type="'cook'" :isRecommand="false" :cookItem="item" :cookFilter="cookFilter" :cookNoFilter="npc.noTag"></cook-bar>
+                            </view>
+                        </view>
+                    </view>
+                </swiper-item>
+                <swiper-item>
+                    <view class="npc-item-tab-div" :style="{ height: swiperHeight - 200 + 'px' }">
+                        <view class="npc-item-tab-div-drinks-tag">
+                            <view class="drink-tag" v-for="item in npc.drinks.split(',')" :key="item" @click="filterDrinks(item.trim())">
+                                 • {{ item.trim() }}
+                                 <view v-if="drinksFilter.has(item.trim())" class="drink-tag-select"></view>
+                            </view>
+                        </view>
+                        <view class="npc-item-tab-div-recommend-cook" :style="{ height: swiperHeight - 280 + 'px' }">
+                            <view class="npc-item-tab-div-cook-div-cook" v-for="item in npcDrinks" :key="item.name">
+                    			<cook-bar :type="'drink'" :isRecommand="false" :cookItem="item" :cookFilter="drinksFilter"></cook-bar>
+                            </view>
+                        </view>
+                    </view>
+                </swiper-item>
+                <swiper-item>
+                    <view class="npc-item-tab-div" :style="{ height: swiperHeight - 200 + 'px' }">
+                        <view v-if="!!npc.rewardCard?.effect">
+                            <view class="npc-item-tab-div-reward-title">
+                                <view>{{ npc.rewardCard.name }}</view>
+                            </view>
+                            <view class="npc-item-tab-div-reward-div">
+                                <text>{{ npc.rewardCard.effect }}</text>
+                            </view>
+                            <view class="npc-item-tab-div-punish-title">
+                                <view>{{ npc.punishCard.name }}</view>
+                            </view>
+                            <view class="npc-item-tab-div-punish-div">
+                                <text>{{ npc.punishCard.effect }}</text>
+                            </view>
+                        </view>
+                        <view class="npc-item-tab-div-friend" v-else>
+                            <view><uv-empty text="无符卡！" textColor="#000" textSize="20px" icon="/static/img/common/no-card.png"></uv-empty></view>
+                        </view>
+                    </view>
+                </swiper-item>
+                <swiper-item>
+                    <view class="npc-item-tab-div" :style="{ height: swiperHeight - 200 + 'px' }">
+                        <view class="npc-item-tab-div-friend" v-if="npc?.friendship.length > 0">
+                            <view class="npc-item-tab-div-friend-item" v-for="item in npc.friendship" :key="item.name">
+                                <view class="npc-item-tab-div-friend-item-view">
+                                    <view class="left">羁绊提升：</view>
+                                    <view class="right"><uv-rate activeIcon="heart-fill" v-model="item.name" inactiveIcon="heart" readonly=""></uv-rate></view>
+                                </view>
+                                <view class="npc-item-tab-div-friend-item-view">
+                                    <view class="left">前置任务：</view>
+                                    <view class="right"><text>{{ !!item.condition ? item.condition : '无' }}</text></view>
+                                </view>
+                                <view class="npc-item-tab-div-friend-item-view">
+                                    <view class="left">{{ item.name === '5' ? '最终奖励：' : '升级任务：'}}</view>
+                                    <view class="right">{{ item.task }}</view>
+                                </view>
+                            </view>
+                        </view>
+                        <view class="npc-item-tab-div-friend" v-else>
+                            <view><uv-empty text="无羁绊！" textColor="#000" textSize="20px" icon="/static/img/common/no-friend.png" iconSize="220"></uv-empty></view>
+                        </view>
+                    </view>
+                </swiper-item>
+            </swiper>
         </view>
     </view>
 </template>
@@ -115,10 +127,15 @@
 <script setup>
     import { ref } from 'vue';
 	import cookBar from '@/components/cookBar.vue'
+    import { onLoad } from '@dcloudio/uni-app'
     
     const back = () => {
         uni.navigateBack()
     }
+    const swiperHeight = ref('')
+    onLoad(() => {
+        swiperHeight.value = uni.getSystemInfoSync().windowHeight;
+    })
     
     const tabList = ref([
         {name: '推荐'},
@@ -127,9 +144,9 @@
         {name: '符卡'},
         {name: '羁绊'},
     ])
-    const tabName = ref(tabList.value[0].name)
+    const tabName = ref(0)
     const clickTab = (item) => {
-        tabName.value = item.name
+        tabName.value = item.index
     }
     
     const npc = ref(uni.getStorageSync('selectNpc'))
@@ -221,7 +238,6 @@
     
     .npc-item {
         width: 100vw;
-        height: calc(100vh - 10px);
         background-color: #d7ad95;
         // border: 1px solid red;
         
@@ -239,15 +255,10 @@
         
         .npc-item-tab {
             width: 100vw;
-            height: 68vh;
             
             .npc-item-tab-div {
-                // min-height: calc(100vh - 250px);
-                height: calc(100vh - 220px);
-                // max-height: calc(100vh - 250px);
                 overflow: auto;
                 padding: 5px;
-                // background-color: #d7ad95;
                 color: #000000;
                 background-color: #CFBFA2;
                 
@@ -255,6 +266,7 @@
                     height: 48%;
                     margin: 5px;
                     overflow: auto;
+                    border-radius: 10px;
                     
                     .npc-item-tab-div-cook-div-cook {
                         margin: 5px 2px;
@@ -280,25 +292,12 @@
                     align-items: center;
                 }
                 
-                .npc-item-tab-div-cook-div {
-                    height: calc(100vh - 350px);
-                    border-radius: 10px;
-                    // min-height: calc(100vh - 370px);
-                    // max-height: calc(100vh - 370px);
-                }
-                
                 .npc-item-tab-div-drinks-tag {
                     display: flex;
                     flex-wrap: wrap;
                     align-items: center;
                     margin: 5px;
                     height: 60px;
-                }
-                .npc-item-tab-div-drinks-div {
-                    height: calc(100vh - 295px);
-                    border-radius: 10px;
-                    // min-height: calc(100vh - 320px);
-                    // max-height: calc(100vh - 320px);
                 }
                 
                 .npc-item-tab-div-reward-title {
@@ -349,9 +348,6 @@
                         }
                     }
                 }
-            }
-            .tab-css {
-                height: calc(100vh - 220px);
             }
             .npc-item-tab-div::-webkit-scrollbar {
               display: none;

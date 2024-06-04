@@ -32,7 +32,7 @@
                     <uv-search placeholder="请输入料理名称" v-model="searchFilter" bgColor="#8D6549" borderColor="#FBEFCB" searchIconColor="#e0afa0" color="#e0afa0" :showAction="false" height="55rpx" @change="filterCooks('')"></uv-search>
                 </view>
                 <view class="cook-total-view" style="width: 30%;">
-                    <uv-drop-down ref="dropDown" sign="cookSort" text-color="#fff" text-active-color="#dbaa9b">
+                    <uv-drop-down ref="dropDown" sign="cookSort" text-color="#dbaa9b" text-active-color="#dbaa9b" :defaultValue="[0, 'normal', '0']">
                         <uv-drop-down-item name="normal" type="2" :label="sortDefaultValue.label" :value="sortDefaultValue.value"></uv-drop-down-item>
                         <uv-drop-down-popup sign="cookSort" @clickItem="changeSort" :currentDropItem="sortList"></uv-drop-down-popup>
                     </uv-drop-down>
@@ -106,12 +106,14 @@
                 initMaterialTags()
             }
 		}
+		filterCooks('')
     })
     
     const cookShow = ref([])
     const spliceCook = () => {
         cookShow.value.splice(0)
-        let end = cooks.value.length < 10 ? cooks.value.length : 10
+		let len = 20
+        let end = cooks.value.length < len ? cooks.value.length : len
         for (let i = 0; i < end; i++) {
             cookShow.value.push(cooks.value[i])
         }
@@ -137,6 +139,7 @@
         filterCooks('')
     }
     
+	const dropDown = ref('')
     const sortDefaultValue = ref({label: '默认排序', value: 'normal'})
     const sortList = ref({
         label: '默认排序',
@@ -228,7 +231,6 @@
         }
         spliceCook()
     }
-    filterCooks('')
     
     const tagModal = ref(false)
     const chooseItem = ref('')

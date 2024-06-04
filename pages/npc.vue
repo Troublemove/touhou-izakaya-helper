@@ -123,14 +123,6 @@
     .npc {
         background-color: #8D6549;
         
-        .tag-filter {
-            // left: 0;
-            // right: 0;
-            // top: 0;
-            // background-color: #8d6549;
-            // position: fixed;
-        }
-
         .npc-area {
             padding: 2px 5px;
             background-color: #8D6549;

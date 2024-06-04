@@ -4,7 +4,7 @@
         <uv-toast ref="toast"></uv-toast>
         <button @click="clearCacheModal.open()">重置缓存</button>
         <button @click="chooseFile()">读取配置文件</button>
-        <!-- <button @click="test()">loading</button> -->
+        <button @click="test()">loading</button>
     </view>
     <uv-loading-page :loading="loading" loading-text="读取中..." font-size="20px" loading-mode="semicircle" bgColor="#8D6549"></uv-loading-page>
     <uv-modal ref="clearCacheModal" content='该操作会将所有数据重置!' :showCancelButton='true' @confirm="clearCache()"></uv-modal>
@@ -68,10 +68,12 @@
     }
     
     const test = (params) => {
-        loading.value = true
-        setTimeout(() => {
-            loading.value = false
-        }, 1000)
+		let a = {"name":"hxwzt", "chinese":"海鲜味噌汤", "cooker":"cook1", "tag": "实惠1, 素, 家常, 汤羹", "withNo": "重油", "material": "海苔", "time":"3.6", "level":"1", "money": "8", "from": "初始解锁"}
+		let cook = uni.getStorageSync('cookData')
+		console.log('000', cook[0]);
+		cook[0] = a
+		uni.setStorageSync('cookData', cook)
+		console.log('000', cook[0]);
     }
 
 	const compareAB = (a, b) => {

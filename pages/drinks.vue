@@ -80,9 +80,8 @@
 		}
 		
 		.drinks-div {
-			width: 98vw;
-			padding: 4px;
-            border-radius: 10px;
+			margin: 5px;
+            border-radius: 15px;
 			overflow: auto;
 			// display: flex;
 			// flex-direction: row;
@@ -92,9 +91,9 @@
 			// align-items: flex-start;
 			
 			.drinks-div-drink {
-				// width: 45%;
-				margin: 5px 2px;
-				padding: 0px 5px;
+                width: 94%;
+				margin: 5px 5px;
+				padding: 5px 5px;
 				height: auto;
 				display: flex;
 				align-items: center;

@@ -1,8 +1,8 @@
 <template>
 	<view class="cook-bar" v-if="props.type === 'cook'"  @click="openItem(props.cookItem)">
 		<view class="cook-bar-left">
-			<image :src="'/static/img/cook/' + props.cookItem.name + '.png'" :style="props.imgSize" mode="scaleToFill"/>
-			<image :src="'/static/img/common/' + props.cookItem.cooker + '.png'" :style="props.imgSize" mode="scaleToFill"/>
+			<image :src="'/static/img/cook/' + props.cookItem.name + '.png'" :style="props.imgSize" mode="scaleToFill" lazy-load="true"/>
+			<image :src="'/static/img/common/' + props.cookItem.cooker + '.png'" :style="props.imgSize" mode="scaleToFill" lazy-load="true"/>
 		</view>
 		<view class="cook-bar-middle">
 			<view>
@@ -28,7 +28,7 @@
 	</view>
 	<view class="cook-bar" v-if="props.type === 'drink'" @click="openItem(props.cookItem)">
 		<view class="cook-bar-left">
-			<image :src="'/static/img/drink/' + props.cookItem.name + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill"/>
+			<image :src="'/static/img/drink/' + props.cookItem.name + '.png'" style="width: 40px; height: 40px;" mode="scaleToFill" lazy-load="true"/>
 		</view>
 		<view class="cook-bar-middle">
 			<view>

@@ -4,7 +4,7 @@
     </page-meta>
     <view class="npc-item" :style="{ height: swiperHeight + 'px' }">
         <view class="npc-item-info" @click="back">
-            <image :src="'/static/img/npc/' + npc.name + '.png'" style="width: 100px; height: 130px;margin-right: 10px;" mode="scaleToFill"/>
+            <image :src="'/static/img/npc/' + npc.name + '.png'" style="width: 100px; height: 130px;margin-right: 10px;" mode="scaleToFill" lazy-load="true"/>
             <view class="tag-div">
                 <view style="margin: 0px;font-weight: bold;font-size: 20px;">{{ npc.chinese }}</view>
                 <view>持有: {{ npc.money }} 円</view>

@@ -1,47 +1,49 @@
 <template>
-    <view class="cook">
-        <view class="tag-filter">
-            <view class="touhou-tag" @click="openModel('like')">喜爱</view>
-            <uv-scroll-list class="tag-scroll" :indicator="false" >
-                <view class="touhou-tag" v-for="item in cookFilter" :key="item" @click="chooseTagFilter('like', item)">{{ item }}<view class="touhou-tag-select"></view></view>
-            </uv-scroll-list>
-            <view class="touhou-tag" @click="clear('like')" v-if="cookFilter.size > 0">清空</view>
-        </view>
-        <view class="tag-filter">
-            <view class="touhou-notag-left" @click="openModel('dislike')">厌恶</view>
-            <uv-scroll-list class="tag-scroll" :indicator="false" >
-                <view class="touhou-notag-left" v-for="item in cookNoTagFilter" :key="item" @click="chooseTagFilter('dislike', item)">{{ item }}<view class="touhou-notag-left-select"></view></view>
-            </uv-scroll-list>
-            <view class="touhou-tag" @click="clear('dislike')" v-if="cookNoTagFilter.size > 0">清空</view>
-        </view>
-        <view class="tag-filter">
-            <view class="drink-tag" @click="openModel('material')">食材</view>
-            <uv-scroll-list class="tag-scroll" :indicator="false" >
-                <view class="drink-tag" v-for="item in materialsFilter" :key="item" @click="chooseTagFilter('material', item)">{{ item }}<view class="drink-tag-select"></view></view>
-            </uv-scroll-list>
-            <view class="touhou-tag" @click="clear('material')" v-if="materialsFilter.size > 0">清空</view>
-        </view>
-        <view class="cooker-select">
-            <uv-checkbox-group v-model="cookerValue" placement="row" labelColor="#e6b4a6" labelSize="16px" activeColor="#8d6549" inactiveColor="#fbefcb" @change="selectCooker">
-                <uv-checkbox v-for="(item, index) in cookerList" :key="index" :label="item.name" :name="item.value" ></uv-checkbox>
-            </uv-checkbox-group>
-        </view>
-        <view class="cook-total">
-            <view class="cook-total-view" style="width: 50%;">
-                <uv-search placeholder="请输入料理名称" v-model="searchFilter" bgColor="#8D6549" borderColor="#FBEFCB" searchIconColor="#e0afa0" color="#e0afa0" :showAction="false" height="55rpx" @change="filterCooks('')"></uv-search>
+    <view class="cook" :style="{ height: cookHeight - 55 + 'px' }">
+        <view class="cook-view">
+            <view class="tag-filter">
+                <view class="touhou-tag" @click="openModel('like')">喜爱</view>
+                <uv-scroll-list class="tag-scroll" :indicator="false" >
+                    <view class="touhou-tag" v-for="item in cookFilter" :key="item" @click="chooseTagFilter('like', item)">{{ item }}<view class="touhou-tag-select"></view></view>
+                </uv-scroll-list>
+                <view class="touhou-tag" @click="clear('like')" v-if="cookFilter.size > 0">清空</view>
             </view>
-            <view class="cook-total-view" style="width: 30%;">
-                <uv-drop-down ref="dropDown" sign="cookSort" text-color="#fff" text-active-color="#dbaa9b">
-                    <uv-drop-down-item name="normal" type="2" :label="sortDefaultValue.label" :value="sortDefaultValue.value"></uv-drop-down-item>
-                    <uv-drop-down-popup sign="cookSort" @clickItem="changeSort" :currentDropItem="sortList"></uv-drop-down-popup>
-                </uv-drop-down>
+            <view class="tag-filter">
+                <view class="touhou-notag-left" @click="openModel('dislike')">厌恶</view>
+                <uv-scroll-list class="tag-scroll" :indicator="false" >
+                    <view class="touhou-notag-left" v-for="item in cookNoTagFilter" :key="item" @click="chooseTagFilter('dislike', item)">{{ item }}<view class="touhou-notag-left-select"></view></view>
+                </uv-scroll-list>
+                <view class="touhou-tag" @click="clear('dislike')" v-if="cookNoTagFilter.size > 0">清空</view>
             </view>
-            <view class="cook-total-view" style="width: 10%;color: #e0afa0;">
-                {{cooks.length}}
+            <view class="tag-filter">
+                <view class="drink-tag" @click="openModel('material')">食材</view>
+                <uv-scroll-list class="tag-scroll" :indicator="false" >
+                    <view class="drink-tag" v-for="item in materialsFilter" :key="item" @click="chooseTagFilter('material', item)">{{ item }}<view class="drink-tag-select"></view></view>
+                </uv-scroll-list>
+                <view class="touhou-tag" @click="clear('material')" v-if="materialsFilter.size > 0">清空</view>
+            </view>
+            <view class="cooker-select">
+                <uv-checkbox-group v-model="cookerValue" placement="row" labelColor="#e6b4a6" labelSize="16px" activeColor="#8d6549" inactiveColor="#fbefcb" @change="selectCooker">
+                    <uv-checkbox v-for="(item, index) in cookerList" :key="index" :label="item.name" :name="item.value" ></uv-checkbox>
+                </uv-checkbox-group>
+            </view>
+            <view class="cook-total">
+                <view class="cook-total-view" style="width: 50%;">
+                    <uv-search placeholder="请输入料理名称" v-model="searchFilter" bgColor="#8D6549" borderColor="#FBEFCB" searchIconColor="#e0afa0" color="#e0afa0" :showAction="false" height="55rpx" @change="filterCooks('')"></uv-search>
+                </view>
+                <view class="cook-total-view" style="width: 30%;">
+                    <uv-drop-down ref="dropDown" sign="cookSort" text-color="#fff" text-active-color="#dbaa9b">
+                        <uv-drop-down-item name="normal" type="2" :label="sortDefaultValue.label" :value="sortDefaultValue.value"></uv-drop-down-item>
+                        <uv-drop-down-popup sign="cookSort" @clickItem="changeSort" :currentDropItem="sortList"></uv-drop-down-popup>
+                    </uv-drop-down>
+                </view>
+                <view class="cook-total-view" style="width: 10%;color: #e0afa0;">
+                    {{ cooks.length }}
+                </view>
             </view>
         </view>
-        <view class="cook-div" :style="{ height: cookHeight - 235 + 'px' }">
-            <view class="cook-div-cook" v-for="item in cooks" :key="item.chinese">
+        <view class="cook-div">
+            <view class="cook-div-cook" v-for="item in cookShow" :key="item.chinese">
 				<cook-bar :type="'cook'" :cookItem="item" :cookFilter="cookFilter"></cook-bar>
             </view>
         </view>
@@ -62,7 +64,7 @@
                         <view class="matrial-div-div">
                             <view class="material-item" v-for="item in chooseItem.value" :key="item" @click="chooseTagFilter(chooseItem.type, item.chinese)">
                                 <view class="material-item-left">
-                                    <image :src="'/static/img/material/' + item.name + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill"/>
+                                    <image :src="'/static/img/material/' + item.name + '.png'" style="width: 50px; height: 50px;" mode="scaleToFill" lazy-load="true"/>
                                 </view>
                                 <view class="material-item-middle">
                                     <view>{{ item.chinese }} ￥{{ item.money }} - Lv {{ item.level }}</view>
@@ -108,8 +110,21 @@
                 initMaterialTags()
             }
 		}
-        filterCooks('')
     })
+    
+    const cookShow = ref('')
+    const spliceCook = () => {
+        cookShow.value.slice(0)
+        let end = cooks.length < 10 ? cooks.length : 10
+        for (let i = 0; i < end; i++) {
+            cookShow.value[i] = cooks.value[i]
+        }
+        cookShow.value = cooks.value.splice(0, end)
+        setTimeout(() => {
+            cookShow.value = cookShow.value.concat(cooks.value)
+            cooks.value.slice(0)
+        }, 100)
+    }
     
     const cookerValue = ref([''])
     const cookerFilter = ref(new Set())
@@ -217,7 +232,9 @@
                 return -(x.money - y.money)
             })
         }
+        spliceCook()
     }
+    filterCooks('')
     
     const tagModal = ref(false)
     const chooseItem = ref('')
@@ -296,40 +313,47 @@
 <style lang="scss" scoped>
     .cook {
         width: 100vw;
+        display: flex;
+        flex-direction: column;
         background-color: #8D6549;
         
-        .tag-filter {
-            height: 30px;
-            padding: 2px 5px;
-            display: flex;
-            justify-content: space-between;
+        .cook-view {
+            height: 168px;
             
-            .tag-scroll {
-                width: calc(100% - 108px);
-                white-space: nowrap;
+            .tag-filter {
+                height: 30px;
+                padding: 2px 5px;
+                display: flex;
+                justify-content: space-between;
+                
+                .tag-scroll {
+                    width: calc(100% - 108px);
+                    white-space: nowrap;
+                }
             }
-        }
-        .uv-checkbox-group--row {
-            justify-content: space-between;
-            align-items: center;
-            margin: 5px 10px;
-        }
-        
-        .cook-total {
-            margin: 0px 5px;
-            text-align: center;
-            color: #fff;
-            display: flex;
-            align-items: center;
+            .uv-checkbox-group--row {
+                justify-content: space-between;
+                align-items: center;
+                margin: 5px 10px;
+            }
             
-            .cook-total-view {
-                margin: 5px;
+            .cook-total {
+                margin: 0px 5px;
+                text-align: center;
+                color: #fff;
+                display: flex;
+                align-items: center;
+                
+                .cook-total-view {
+                    margin: 5px;
+                }
             }
         }
         
         .cook-div {
+            flex: 1;
             margin: 5px;
-            overflow: auto;
+            overflow: scroll;
             display: flex;
             align-items: center;
             flex-direction: column;
@@ -441,8 +465,12 @@
     }
     
     :deep(.uv-popup__content) {
-        padding: 10px;
-        background-color: rgba(141, 101, 73, 0.5) !important;
+        padding: 0px;
+        border: 1px solid #e6b4a6;
+        background-color: rgba(141, 101, 73, 0.9) !important;
+    }
+    :deep(.uv-line) {
+        display: none;
     }
     :deep(.uv-modal__content) {
         padding: 10px !important;

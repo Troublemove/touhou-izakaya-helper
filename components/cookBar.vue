@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { ref } from 'vue'
 	
 	const props = defineProps({
 		// 类型：料理，饮料

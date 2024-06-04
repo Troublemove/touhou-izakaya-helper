@@ -1,16 +1,12 @@
 <template>
-    <view class="drinks">
+    <view class="drinks" :style="{ height: drinkHeight - 55 + 'px' }">
 		<view class="drinks-tag">
 			<view class="drink-tag" v-for="item in drinksTags" :key="item" @click="filterDrinks(item)">
 				 • {{ item }}
 				 <view v-if="drinksFilter.has(item)" class="drink-tag-select"></view>
 			</view>
 		</view>
-		<view class="drinks-div" :style="{ height: drinkHeight - 65 + 'px' }">
-			<view class="drinks-div-drink" v-for="item in npcDrinks" :key="item.name">
-				<cook-bar :type="'drink'" :cookItem="item" :cookFilter="drinksFilter"></cook-bar>
-			</view>
-		</view>
+		<cook-view :type="'drink'" :cookShow="npcDrinks" :cookFilter="drinksFilter"></cook-view>
     </view>
 	<tab-bar :selected="2"></tab-bar>
 </template>
@@ -18,7 +14,7 @@
 <script setup>
     import { ref, nextTick } from 'vue';
     import tabBar from '@/components/tab-bar/tabBar.vue'
-	import cookBar from '@/components/cookBar.vue'
+	import cookView from '@/components/cookView.vue'
     import { onShow, onLoad } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
@@ -27,7 +23,7 @@
     nextTick(() => {
 		uni.createSelectorQuery().selectAll('.drinks-tag').boundingClientRect(data => {
 			drinkTagHeight.value = data[0].height
-			drinkHeight.value = uni.getSystemInfoSync().windowHeight - drinkTagHeight.value
+			drinkHeight.value = uni.getSystemInfoSync().windowHeight
 		}).exec()
     })
     onShow(() => {
@@ -70,38 +66,16 @@
 <style lang="scss" scoped>
     .drinks {
         width: 100vw;
+        display: flex;
+        flex-direction: column;
         background-color: #8D6549;
 		
 		.drinks-tag {
 			width: 96%;
-			padding: 10px;
+			height: 170px;
+			margin: 10px;
 			display: flex;
 			flex-wrap: wrap;
-		}
-		
-		.drinks-div {
-			margin: 5px;
-            border-radius: 15px;
-			overflow: auto;
-			// display: flex;
-			// flex-direction: row;
-			// flex-wrap: wrap;
-			// align-content: flex-start;
-			// justify-content: flex-start;
-			// align-items: flex-start;
-			
-			.drinks-div-drink {
-                width: 94%;
-				margin: 5px 5px;
-				padding: 5px 5px;
-				height: auto;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				border-radius: 10px;
-				background-color: #d4aa76;
-				border: 2px solid rgb(165, 115, 66);
-			}
 		}
     }
 </style>

@@ -42,11 +42,7 @@
                 </view>
             </view>
         </view>
-        <view class="cook-div">
-            <view class="cook-div-cook" v-for="item in cookShow" :key="item.chinese">
-				<cook-bar :type="'cook'" :cookItem="item" :cookFilter="cookFilter"></cook-bar>
-            </view>
-        </view>
+		<cook-view :type="'cook'" :cookShow="cookShow" :cookFilter="cookFilter"></cook-view>
         
         <uv-modal ref="tagModal" :showConfirmButton="false">
             <view class="modal-div">
@@ -86,7 +82,7 @@
 <script setup>
     import { nextTick, ref } from 'vue';
     import tabBar from '@/components/tab-bar/tabBar.vue'
-	import cookBar from '@/components/cookBar.vue'
+	import cookView from '@/components/cookView.vue'
     import { onShow } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
@@ -112,17 +108,15 @@
 		}
     })
     
-    const cookShow = ref('')
+    const cookShow = ref([])
     const spliceCook = () => {
-        cookShow.value.slice(0)
-        let end = cooks.length < 10 ? cooks.length : 10
+        cookShow.value.splice(0)
+        let end = cooks.value.length < 10 ? cooks.value.length : 10
         for (let i = 0; i < end; i++) {
-            cookShow.value[i] = cooks.value[i]
+            cookShow.value.push(cooks.value[i])
         }
-        cookShow.value = cooks.value.splice(0, end)
         setTimeout(() => {
-            cookShow.value = cookShow.value.concat(cooks.value)
-            cooks.value.slice(0)
+            cookShow.value = cooks.value
         }, 100)
     }
     
@@ -313,6 +307,7 @@
 <style lang="scss" scoped>
     .cook {
         width: 100vw;
+		// height: calc(100vh - 55px);
         display: flex;
         flex-direction: column;
         background-color: #8D6549;
@@ -350,40 +345,8 @@
             }
         }
         
-        .cook-div {
-            flex: 1;
-            margin: 5px;
-            overflow: scroll;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            border-radius: 15px;
-            // box-shadow: inset 0px 0px 10px 1px #000000;
-            
-            .cook-div-cook {
-                width: 94%;
-                margin: 5px 2px;
-                padding: 5px 5px;
-                height: auto;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                border-radius: 10px;
-                background-color: #d4aa76;
-				border: 2px solid rgb(165, 115, 66);
-				// box-shadow: inset 0px -6px 10px 0px rgb(128, 99, 73);
-				// background-image: url('/static/img/common/cookPad.png');
-				// background-size: 100% 100%;
-				// background-repeat: no-repeat;
-            }
-        }
-        .cook-div::-webkit-scrollbar {
-            display: none;
-        }
-        
         .modal-div {
             width: 100vw;
-            // background-color: #fbefcb;
             
             .modal-div-tag {
                 padding: 5px 5px;

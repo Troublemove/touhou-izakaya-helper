@@ -40,21 +40,23 @@
                 </swiper-item>
                 <swiper-item>
                     <view class="npc-item-tab-div" :style="{ height: swiperHeight - 200 + 'px' }">
-                        <view class="npc-item-tab-div-cook-tag" style="height: 68px;">
-                            <view class="touhou-tag" v-for="item in npc.tag.split(',')" :key="item" @click="filterCooks('tag', item.trim())">
-                                 • {{ item.trim() }}
-                                <view v-if="cookFilter.has(item.trim())" class="touhou-tag-select"></view>
-                            </view>
-                        </view>
-                        <view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-if="!!npc.noTag">
-                            <view class="touhou-notag-left" v-for="item in npc.noTag.split(',')" :key="item" @click="filterCooks('noTag', item.trim())">
-                                {{ item.trim() }}
-                                <view v-if="cookNoTagFilter.has(item.trim())" class="touhou-notag-left-select"></view>
-                            </view>
-                        </view>
-                        <view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-else></view>
+						<view class="npc-item-tab-div-cook">
+							<view class="npc-item-tab-div-cook-tag" style="height: 68px;">
+							    <view class="touhou-tag" v-for="item in npc.tag.split(',')" :key="item" @click="filterCooks('tag', item.trim())">
+							         • {{ item.trim() }}
+							        <view v-if="cookFilter.has(item.trim())" class="touhou-tag-select"></view>
+							    </view>
+							</view>
+							<view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-if="!!npc.noTag">
+							    <view class="touhou-notag-left" v-for="item in npc.noTag.split(',')" :key="item" @click="filterCooks('noTag', item.trim())">
+							        {{ item.trim() }}
+							        <view v-if="cookNoTagFilter.has(item.trim())" class="touhou-notag-left-select"></view>
+							    </view>
+							</view>
+							<view class="npc-item-tab-div-cook-tag" style="height: 30px;" v-else></view>
+						</view>
                         <view class="npc-item-tab-div-recommend-cook" :style="{ height: swiperHeight - 335 + 'px' }">
-                            <view class="npc-item-tab-div-cook-div-cook" v-for="item in cooks" :key="item.name">
+                            <view class="npc-item-tab-div-cook-div-cook" v-for="item in cookShow" :key="item.name">
                     			<cook-bar :type="'cook'" :isRecommand="false" :cookItem="item" :cookFilter="cookFilter" :cookNoFilter="npc.noTag"></cook-bar>
                             </view>
                         </view>
@@ -228,7 +230,19 @@
             })
             return tagfilter.length === 0 && tagNoResult.size === 0
         })
+		spliceCook()
     }
+	const cookShow = ref([])
+	const spliceCook = () => {
+	    cookShow.value.splice(0)
+	    let end = cooks.value.length < 10 ? cooks.value.length : 10
+	    for (let i = 0; i < end; i++) {
+	        cookShow.value.push(cooks.value[i])
+	    }
+	    setTimeout(() => {
+	        cookShow.value = cooks.value
+	    }, 100)
+	}
 </script>
 
 <style lang="scss" scoped>

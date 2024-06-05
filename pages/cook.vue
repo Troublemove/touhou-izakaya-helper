@@ -353,7 +353,7 @@
             
             .touhou-tag, .touhou-notag-left, .drink-tag {
                 width: 60px;
-                height: 20px;
+                height: 23px;
                 margin: 5px 2px;
                 justify-content: center;
                 font-size: 15px;
@@ -378,7 +378,7 @@
                     
                     .matrial-tag {
                         width: 100%;
-                        height: 210px;
+                        height: 230px;
                         display: flex;
                         flex-wrap: wrap;
                         flex-direction: row;
@@ -386,8 +386,8 @@
                         justify-content: space-between;
                     }
                     .matrial-div-div {
-                        margin-top: 15px;
-                        max-height: calc(80vh - 225px);
+                        margin-top: 20px;
+                        max-height: calc(80vh - 250px);
                         overflow: auto;
                         
                         .material-item {

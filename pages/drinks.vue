@@ -2,7 +2,7 @@
     <view class="drinks" :style="{ height: drinkHeight - 55 + 'px' }">
 		<view class="drinks-tag">
 			<view class="drink-tag" v-for="item in drinksTags" :key="item" @click="filterDrinks(item)">
-				 • {{ item }}
+				 {{ item }}
 				 <view v-if="drinksFilter.has(item)" class="drink-tag-select"></view>
 			</view>
 		</view>

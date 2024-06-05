@@ -39,7 +39,7 @@
 		display: flex;
         align-items: center;
 		margin: 3px 2px;
-		padding: 2px 8px;
+		padding: 2px 6px;
 		color: #830000;
 		background-color: inherit;
 		background-image: url('/static/img/common/tag.png');

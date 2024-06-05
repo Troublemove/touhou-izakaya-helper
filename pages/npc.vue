@@ -39,18 +39,18 @@
 	    screenHeight.value = uni.getSystemInfoSync().windowHeight
 	})
     onShow(() => {
-		if (!!locations) {
-			locations.value = uni.getStorageSync('locationData')
-		}
-		if (!!npcs) {
-			npcs.value = uni.getStorageSync('npcData')
-		}
-        let location = '全部'
-        locationFilter.value.forEach(item => {
-            location = item
-        })
-        locationFilter.value.clear()
-        selectLocation(location)
+		// if (!!locations) {
+		// 	locations.value = uni.getStorageSync('locationData')
+		// }
+		// if (!!npcs) {
+		// 	npcs.value = uni.getStorageSync('npcData')
+		// }
+        // let location = '全部'
+        // locationFilter.value.forEach(item => {
+        //     location = item
+        // })
+        // locationFilter.value.clear()
+        // selectLocation(location)
     })
 
     const imageError = (index) => {
@@ -94,6 +94,7 @@
             npc.value = npcs.value
         }
     }
+    selectLocation('全部')
 
     // 打开npc详情页面
     const openNpcItem = (npc) => {

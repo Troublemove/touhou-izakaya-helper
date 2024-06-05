@@ -2,12 +2,13 @@
     <view class="setting">
         <uv-notice-bar :text="notice" color="#830000"></uv-notice-bar>
         <uv-toast ref="toast"></uv-toast>
+        <button @click="restartApp()">重启应用</button>
         <button @click="clearCacheModal.open()">重置缓存</button>
         <button @click="chooseFile()">读取配置文件</button>
-        <button @click="test()">loading</button>
+        <!-- <button @click="test()">loading</button> -->
     </view>
     <uv-loading-page :loading="loading" loading-text="读取中..." font-size="20px" loading-mode="semicircle" bgColor="#8D6549"></uv-loading-page>
-    <uv-modal ref="clearCacheModal" content='该操作会将所有数据重置!' :showCancelButton='true' @confirm="clearCache()"></uv-modal>
+    <uv-modal ref="clearCacheModal" content='该操作会将所有数据重置!应用会自动重启!' :showCancelButton='true' @confirm="clearCache()"></uv-modal>
     <uv-modal ref="confirmModal" :content='confirmText'></uv-modal>
     <tab-bar :selected="3"></tab-bar>
 </template>
@@ -56,6 +57,17 @@
     const clearCacheModal = ref('')
 	const confirmText = ref('')
     const confirmModal = ref('')
+    const restartApp = () => {
+        if ('android' === envType.value) {
+            try{
+                plus.runtime.restart()
+            }catch(e){
+                uni.reLaunch({
+                    url: 'npc'
+                })
+            }
+        }
+    }
     // 清理缓存，并重新加载
     const clearCache = () => {
 		uni.clearStorageSync()
@@ -65,15 +77,35 @@
             message: "缓存重置成功!",
             duration: 500
         })
+        restartApp()
     }
+    const envType = ref('')
+    uni.getSystemInfo({
+        success: (res) => {
+            // devtools, ios, android, wechat, other
+            envType.value = res.platform.toLowerCase();
+            console.log('getSystemInfo', res.platform.toLowerCase());
+        },
+        fail: (err) => {
+            console.log('getSystemInfo', err);
+            showToast({
+                type: 'error',
+                message: "getSystemInfo error!" + err,
+                duration: 2000
+            })
+        }
+    })
     
     const test = (params) => {
-		let a = {"name":"hxwzt", "chinese":"海鲜味噌汤", "cooker":"cook1", "tag": "实惠1, 素, 家常, 汤羹", "withNo": "重油", "material": "海苔", "time":"3.6", "level":"1", "money": "8", "from": "初始解锁"}
-		let cook = uni.getStorageSync('cookData')
-		console.log('000', cook[0]);
-		cook[0] = a
-		uni.setStorageSync('cookData', cook)
-		console.log('000', cook[0]);
+        if ('android' === envType.value) {
+            plus.runtime.restart()
+        }
+		// let a = {"name":"hxwzt", "chinese":"海鲜味噌汤", "cooker":"cook1", "tag": "实惠1, 素, 家常, 汤羹", "withNo": "重油", "material": "海苔", "time":"3.6", "level":"1", "money": "8", "from": "初始解锁"}
+		// let cook = uni.getStorageSync('cookData')
+		// console.log('000', cook[0]);
+		// cook[0] = a
+		// uni.setStorageSync('cookData', cook)
+		// console.log('000', cook[0]);
     }
 
 	const compareAB = (a, b) => {
@@ -125,6 +157,13 @@
 			let index = fileName.lastIndexOf('/')
 			let fileDataName = fileName.substr(index + 1).split('.')[0].split('_')[0]
 			console.log('--', fileData[fileDataName]);
+            if ('[object Undefined]' === Object.prototype.toString.call(fileData[fileDataName])) {
+                showToast({
+                	type: 'warning',
+                	message: "请选择8种文件类型文件!",
+                	duration: 1000
+                })
+            }
 			
             if (!file.exists()) {
                 return false;

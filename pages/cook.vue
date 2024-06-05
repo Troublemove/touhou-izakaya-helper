@@ -32,7 +32,7 @@
                     <uv-search placeholder="请输入料理名称" v-model="searchFilter" bgColor="#8D6549" borderColor="#FBEFCB" searchIconColor="#e0afa0" color="#e0afa0" :showAction="false" height="55rpx" @change="filterCooks('')"></uv-search>
                 </view>
                 <view class="cook-total-view" style="width: 30%;">
-                    <uv-drop-down ref="dropDown" sign="cookSort" text-color="#dbaa9b" text-active-color="#dbaa9b" :defaultValue="[0, 'normal', '0']">
+                    <uv-drop-down sign="cookSort" text-color="#dbaa9b" text-active-color="#d3aa76" :defaultValue="[0, '0', 'normal']">
                         <uv-drop-down-item name="normal" type="2" :label="sortDefaultValue.label" :value="sortDefaultValue.value"></uv-drop-down-item>
                         <uv-drop-down-popup sign="cookSort" @clickItem="changeSort" :currentDropItem="sortList"></uv-drop-down-popup>
                     </uv-drop-down>
@@ -91,22 +91,21 @@
 		cookHeight.value = uni.getSystemInfoSync().windowHeight
 	})
     onShow(() => {
-		if (!!cookList) {
-			cookList.value = uni.getStorageSync('cookData')
-		}
-		if (!!cookTags) {
-			cookTags.value = uni.getStorageSync('cookTagData')
-		}
-		if (!!cookNoTags) {
-			cookNoTags.value = uni.getStorageSync('cookTagData')
-		}
-		if (!!materials) {
-			materials.value = uni.getStorageSync('materialData')
-            if (!!materialTags) {
-                initMaterialTags()
-            }
-		}
-		filterCooks('')
+		// if (!!cookList) {
+		// 	cookList.value = uni.getStorageSync('cookData')
+		// }
+		// if (!!cookTags) {
+		// 	cookTags.value = uni.getStorageSync('cookTagData')
+		// }
+		// if (!!cookNoTags) {
+		// 	cookNoTags.value = uni.getStorageSync('cookTagData')
+		// }
+		// if (!!materials) {
+		// 	materials.value = uni.getStorageSync('materialData')
+  //           if (!!materialTags) {
+  //               initMaterialTags()
+  //           }
+		// }
     })
     
     const cookShow = ref([])
@@ -139,14 +138,13 @@
         filterCooks('')
     }
     
-	const dropDown = ref('')
     const sortDefaultValue = ref({label: '默认排序', value: 'normal'})
     const sortList = ref({
         label: '默认排序',
         value: 'normal',
         activeIndex: 0,
-        color: '#333',
-        activeColor: '#2878ff',
+        color: '#dbaa9b',
+        activeColor: '#d3aa76',
         child: [{
             label: '默认排序',
             value: 'normal'
@@ -180,6 +178,8 @@
             })
         })
     }
+    initMaterialTags()
+    
     const cooks = ref('')
     const cookFilter = ref(new Set())
     const cookNoTagFilter = ref(new Set())
@@ -231,6 +231,7 @@
         }
         spliceCook()
     }
+	filterCooks('')
     
     const tagModal = ref(false)
     const chooseItem = ref('')
@@ -350,34 +351,43 @@
         .modal-div {
             width: 100vw;
             
+            .touhou-tag, .touhou-notag-left, .drink-tag {
+                width: 60px;
+                height: 20px;
+                margin: 5px 2px;
+                justify-content: center;
+                font-size: 15px;
+            }
+            .touhou-notag-left {
+                background-color: #5d453a;
+            }
+            .drink-tag {
+                margin: 2px 5px;
+                padding: 2px 5px !important;
+            }
+            
             .modal-div-tag {
-                padding: 5px 5px;
                 display: flex;
                 flex-wrap: wrap;
                 align-items: center;
-                
-                .touhou-tag, .touhou-notag-left {
-                    margin: 5px;
-                }
+                justify-content: space-around;
                 
                 .material-div {
-                    height: 75vh;
+                    height: 80vh;
                     overflow: auto;
                     
                     .matrial-tag {
                         width: 100%;
-                        height: 190px;
+                        height: 210px;
                         display: flex;
                         flex-wrap: wrap;
                         flex-direction: row;
-                        
-                        .drink-tag {
-                            margin: 2px;
-                        }
+                        align-items: center;
+                        justify-content: space-between;
                     }
                     .matrial-div-div {
-                        margin-top: 10px;
-                        max-height: calc(75vh - 200px);
+                        margin-top: 15px;
+                        max-height: calc(80vh - 225px);
                         overflow: auto;
                         
                         .material-item {
@@ -437,8 +447,11 @@
     :deep(.uv-line) {
         display: none;
     }
+    :deep(.uv-modal) {
+        width: 92vw !important;
+    }
     :deep(.uv-modal__content) {
-        padding: 10px !important;
+        padding: 15px 2px !important;
     }
     :deep(.uv-drop-down) {
         width: 96px;

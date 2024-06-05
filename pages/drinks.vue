@@ -18,22 +18,17 @@
     import { onShow, onLoad } from '@dcloudio/uni-app'
     import { initCache } from '@/static/js/common.js'
 
-    const drinkTagHeight = ref(0)
     const drinkHeight = ref('')
     nextTick(() => {
-		uni.createSelectorQuery().selectAll('.drinks-tag').boundingClientRect(data => {
-			drinkTagHeight.value = data[0].height
-			drinkHeight.value = uni.getSystemInfoSync().windowHeight
-		}).exec()
+		drinkHeight.value = uni.getSystemInfoSync().windowHeight
     })
     onShow(() => {
-		if (!!drinksTags) {
-			drinksTags.value = uni.getStorageSync('drinkTagData')
-		}
-		if (!!drinks) {
-			drinks.value = uni.getStorageSync('drinksData')
-		}
-        filterDrinks('')
+		// if (!!drinksTags) {
+		// 	drinksTags.value = uni.getStorageSync('drinkTagData')
+		// }
+		// if (!!drinks) {
+		// 	drinks.value = uni.getStorageSync('drinksData')
+		// }
     })
     
     const drinksTags = ref(uni.getStorageSync('drinkTagData'))
@@ -61,6 +56,7 @@
 	        return filter.length === 0
 	    })
 	}
+    filterDrinks('')
 </script>
 
 <style lang="scss" scoped>
@@ -76,6 +72,16 @@
 			margin: 10px;
 			display: flex;
 			flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            
+            .drink-tag {
+                width: 60px;
+                height: 20px;
+                margin: 3px 2px;
+                justify-content: center;
+                font-size: 15px;
+            }
 		}
     }
 </style>

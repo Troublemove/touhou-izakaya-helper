@@ -9,6 +9,7 @@
 # 使用方式
 
 安装即用，软件会内置游戏数据，所以不需要导入配置文件，配置文件主要进行自定义修改。
+百度网盘，https://pan.baidu.com/s/1yWWgl0KiKR_QlH0uAO2Kig    yqst
 
 ![info](./info.png)
 

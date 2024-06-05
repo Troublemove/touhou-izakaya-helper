@@ -22,6 +22,7 @@
         "distribute" : {
             /* android打包配置 */
             "android" : {
+                "packageName" : "com.touhou.helper",
                 "permissions" : [
                     "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>"

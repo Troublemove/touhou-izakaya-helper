@@ -361,10 +361,7 @@
             .touhou-notag-left {
                 background-color: #5d453a;
             }
-            .drink-tag {
-                margin: 2px 5px;
-                padding: 2px 5px !important;
-            }
+            
             
             .modal-div-tag {
                 display: flex;
@@ -374,21 +371,32 @@
                 
                 .material-div {
                     height: 80vh;
+					display: flex;
+					flex-direction: column;
                     overflow: auto;
                     
                     .matrial-tag {
                         width: 100%;
-                        height: 230px;
+                        height: 270px;
                         display: flex;
                         flex-wrap: wrap;
                         flex-direction: row;
                         align-items: center;
                         justify-content: space-between;
+						
+						.drink-tag {
+						    margin: 2px 5px;
+						    padding: 1px 5px !important;
+						}
                     }
                     .matrial-div-div {
+						flex: 1;
                         margin-top: 20px;
-                        max-height: calc(80vh - 250px);
                         overflow: auto;
+						
+						.drink-tag {
+							height: 22px;
+						}
                         
                         .material-item {
                             color: #e6b4a6;

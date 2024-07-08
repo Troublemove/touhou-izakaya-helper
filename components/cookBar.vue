@@ -51,14 +51,14 @@
 	        <view>{{ chooseItem.chinese }}</view>
 	        <view>Lv {{ chooseItem.level }}</view>
 	        <view>￥{{ chooseItem.money }}</view>
-	        <view class="modal-div-tag" v-if="!!chooseItem.material">
-	            <view class="touhou-tag" v-for="item in chooseItem.tag.split(',')" :key="item"> • {{ item.trim() }} </view>
+	        <view class="modal-div-tag" v-if="!!chooseItem.tag">
+	            <view class="touhou-tag" v-for="item in chooseItem.tag?.split(',')" :key="item"> • {{ item.trim() }} </view>
 	        </view>
 	        <view class="modal-div-tag" v-if="!!chooseItem.withNo">
-	            <view class="touhou-notag-left" v-for="item in chooseItem.withNo.split(',')" :key="item">{{ item.trim() }}</view>
+	            <view class="touhou-notag-left" v-for="item in chooseItem.withNo?.split(',')" :key="item">{{ item.trim() }}</view>
 	        </view>
 	        <view class="modal-div-tag" v-if="!chooseItem.material">
-	            <view class="drink-tag" v-for="item in chooseItem.tag.split(',')" :key="item"> • {{ item.trim() }} </view>
+	            <view class="drink-tag" v-for="item in chooseItem.material?.split(',')" :key="item"> • {{ item.trim() }} </view>
 	        </view>
 	    </view>
 	</uv-modal>

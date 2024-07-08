@@ -15,7 +15,7 @@
         <view class="npc-area">
             <view class="npc-area-img" :style="{ height: screenHeight - 95 + 'px' }">
                 <view class="npc-img" v-for="(item, index) in npc" :key="item.name" @click="openNpcItem(item)">
-                    <img :src="'static/img/npc/' + item.name + '.png'" style="width: 76px; height: 100px;" mode="scaleToFill" @error="imageError(index)" />
+                    <img :src="'/static/img/npc/' + item.name + '.png'" style="width: 76px; height: 100px;" mode="scaleToFill" @error="imageError(index)" />
                 </view>
             </view>
         </view>
@@ -32,7 +32,7 @@
     import tabBar from '@/components/tab-bar/tabBar.vue'
     import { onPageScroll } from '@dcloudio/uni-app'
     import { onShow } from '@dcloudio/uni-app'
-    import { initCache } from '@/static/js/common.js'
+    import { initCache } from '@/js/common.js'
 
 	const screenHeight = ref('')
 	nextTick(() => {

@@ -16,7 +16,6 @@
     import tabBar from '@/components/tab-bar/tabBar.vue'
 	import cookView from '@/components/cookView.vue'
     import { onShow, onLoad } from '@dcloudio/uni-app'
-    import { initCache } from '@/static/js/common.js'
 
     const drinkHeight = ref('')
     nextTick(() => {

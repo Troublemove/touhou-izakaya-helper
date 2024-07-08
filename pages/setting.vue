@@ -19,9 +19,7 @@
         ref
     } from 'vue';
     import tabBar from '@/components/tab-bar/tabBar.vue'
-    import {
-        initCache
-    } from '@/static/js/common.js'
+    import { initCache } from '../js/common.js'
 	
     const notice = ref('该软件永久免费使用！')
 	const fileData = reactive({
